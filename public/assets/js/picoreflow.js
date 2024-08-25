@@ -50,6 +50,7 @@ function updateProfile(id)
 {
     selected_profile = id;
     selected_profile_name = profiles[id].name;
+    selected_profile_description = profiles[id].description;
     var job_seconds = profiles[id].data.length === 0 ? 0 : parseInt(profiles[id].data[profiles[id].data.length-1][0]);
     var kwh = (3850*job_seconds/3600/1000).toFixed(2);
     var cost =  (kwh*kwh_rate).toFixed(2);
@@ -270,6 +271,7 @@ function enterEditMode()
     $('#btn_controls').hide();
     console.log(profiles);
     $('#form_profile_name').val(profiles[selected_profile].name);
+    $('#form_profile_description').val(profiles[selected_profile].description);
     graph.profile.points.show = true;
     graph.profile.draggable = true;
     graph.plot = $.plot("#graph_container", [ graph.profile, graph.live ], getOptions());
@@ -329,6 +331,7 @@ function toggleTable()
 function saveProfile()
 {
     name = $('#form_profile_name').val();
+    description = $('#form_profile_description').val();
     var rawdata = graph.plot.getData()[0].data
     var data = [];
     var last = -1;
@@ -358,7 +361,7 @@ function saveProfile()
         last = rawdata[i][0];
     }
 
-    var profile = { "type": "profile", "data": data, "name": name }
+    var profile = { "type": "profile", "data": data, "name": name, "description": description }
     var put = { "cmd": "PUT", "profile": profile }
 
     var put_cmd = JSON.stringify(put);
