@@ -268,7 +268,7 @@ def get_profiles():
         with open(os.path.join(profile_path, filename), 'r') as f:
             profiles.append(json.load(f))
     profiles = normalize_temp_units(profiles)
-    return json.dumps(profiles)
+    return json.dumps(sorted(profiles, key=lambda x: x["name"]))
 
 
 def save_profile(profile, force=False):
