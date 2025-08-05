@@ -102,6 +102,12 @@ function updateProgress(percentage)
     }
 }
 
+function deletePoint(i) {
+    console.log('deleting', i)
+    graph.profile.data.splice(i, 1);
+    updateProfileTable();
+}
+
 function updateProfileTable()
 {
     var dps = 0;
@@ -123,7 +129,7 @@ function updateProfileTable()
         html += '<td><input type="text" class="form-control" id="profiletable-0-'+i+'" value="'+ timeProfileFormatter(graph.profile.data[i][0],true) + '" style="width: 60px" /></td>';
         html += '<td><input type="text" class="form-control" id="profiletable-1-'+i+'" value="'+ graph.profile.data[i][1] + '" style="width: 60px" /></td>';
         html += '<td><div class="input-group"><span class="glyphicon glyphicon-circle-arrow-' + slope + ' input-group-addon ds-trend" style="background: '+color+'"></span><input type="text" class="form-control ds-input" readonly value="' + formatDPS(dps) + '" style="width: 100px" /></div></td>';
-        html += '<td>&nbsp;</td></tr>';
+        html += '<td><button type="button" class="btn btn-danger" onclick="deletePoint('+i+')"><span class="glyphicon glyphicon-trash"></span></button></td></tr>';
     }
 
     html += '</table></div>';
