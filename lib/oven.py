@@ -612,7 +612,7 @@ class SimulatedOven(Oven):
     def __init__(self):
         # call parent init
         Oven.__init__(self)
-        self.board = BoardSimulated()
+        self.board = SimulatedBoard()
 
         self.t_env = config.sim_t_env
         self.c_heat = config.sim_c_heat

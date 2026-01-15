@@ -171,18 +171,33 @@ def handle_control():
                     log.info("SCHEDULED_RUN command received")
                     scheduled_start_time = msgdict.get('scheduledStartTime')
                     profile_obj = msgdict.get('profile')
+                    log.info(f"Scheduled start time from UI: {scheduled_start_time}")
                     if profile_obj:
                         profile_json = json.dumps(profile_obj)
                         profile = Profile(profile_json)
+                        log.info(f"Profile loaded: {profile.name}")
 
-                    start_datetime = datetime.fromisoformat(
-                        scheduled_start_time,
-                    )
-                    oven.scheduled_run(
-                        start_datetime,
-                        profile,
-                        lambda: ovenWatcher.record(profile),
-                    )
+                    try:
+                        start_datetime = datetime.fromisoformat(
+                            scheduled_start_time,
+                        )
+                        log.info(f"Parsed datetime: {start_datetime}")
+                        now = datetime.now()
+                        seconds_until = (start_datetime - now).total_seconds()
+                        log.info(f"Current time: {now}")
+                        log.info(f"Seconds until start: {seconds_until}")
+                        
+                        if seconds_until <= 0:
+                            log.error(f"Scheduled start time is in the past! ({seconds_until} seconds)")
+                        else:
+                            oven.scheduled_run(
+                                start_datetime,
+                                profile,
+                                lambda: ovenWatcher.record(profile),
+                            )
+                            log.info(f"Scheduled run confirmed - will start in {seconds_until} seconds")
+                    except Exception as e:
+                        log.error(f"Error parsing scheduled time: {type(e).__name__}: {e}")
 
                 elif msgdict.get("cmd") == "SIMULATE":
                     log.info("SIMULATE command received")
