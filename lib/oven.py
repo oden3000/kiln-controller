@@ -412,6 +412,7 @@ class Oven(threading.Thread):
 
         self.state = "SCHEDULED"
         self.start_datetime = start_datetime
+        self.profile = profile  # Store profile so it displays in UI while scheduled
         self.scheduled_run_timer = Timer(
             seconds_until_start,
             self._timeout,

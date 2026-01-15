@@ -13,6 +13,35 @@ var time_scale_long = "Seconds";
 var temp_scale_display = "C";
 var kwh_rate = 0.26;
 var currency_type = "EUR";
+var scheduled_start_time = null;
+var countdown_interval = null;
+
+function updateScheduledCountdown() {
+    if (scheduled_start_time === null) {
+        return; // No scheduled time set
+    }
+    
+    const now = new Date().getTime();
+    const start = scheduled_start_time.getTime();
+    const remainingMs = start - now;
+    
+    if (remainingMs <= 0) {
+        // Scheduled time has passed, clear the countdown
+        if (countdown_interval !== null) {
+            clearInterval(countdown_interval);
+            countdown_interval = null;
+        }
+        return;
+    }
+    
+    // Calculate hours and minutes remaining
+    const totalSeconds = Math.floor(remainingMs / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    
+    // Update display
+    $('#countdown_display').html('Starting in: ' + hours + ' hour' + (hours !== 1 ? 's' : '') + ' and ' + minutes + ' minute' + (minutes !== 1 ? 's' : ''));
+}
 
 var protocol = 'ws:';
 if (window.location.protocol == 'https:') {
@@ -628,7 +657,18 @@ $(document).ready(function()
                     $("#nav_start").hide();
                     $("#nav_stop").show();
                     $("#timer").removeClass("ds-led-timer-active");
-                    $('#schedule-status').hide()
+                    $('#schedule-status').hide();
+                    $('#profile_selector').hide();
+                    $('#running_profile_heading').show().html('Running: <strong>' + x.profile + '</strong>');
+                    
+                    // If transitioning from SCHEDULED to RUNNING, hide the countdown
+                    if (state_last === "SCHEDULED") {
+                        $('#scheduled_countdown').hide();
+                        if (countdown_interval !== null) {
+                            clearInterval(countdown_interval);
+                            countdown_interval = null;
+                        }
+                    }
 
                     graph.live.data.push([x.runtime, x.temperature]);
                     graph.plot = $.plot("#graph_container", [ graph.profile, graph.live ] , getOptions());
@@ -656,7 +696,41 @@ $(document).ready(function()
                     $('#timer').addClass("ds-led-timer-active"); // Start blinking timer symbol
                     $('#state').html('<p class="ds-text">'+state+'</p>');
                     $('#schedule-status').html('Start at: ' + x.scheduled_start);
-                    $('#schedule-status').show()
+                    $('#schedule-status').show();
+                    $('#profile_selector').hide();
+                    $('#running_profile_heading').show().html('Scheduled: <strong>' + x.profile + '</strong>');
+                    
+                    // Parse scheduled_start time (format: "YYYY-MM-DD HH:MM")
+                    if (x.scheduled_start) {
+                        // Convert "2026-01-16 14:30" to Date object
+                        const dateStr = x.scheduled_start.replace(' ', 'T'); // "2026-01-16T14:30"
+                        scheduled_start_time = new Date(dateStr);
+                        
+                        // Extract and convert to 12-hour format with AM/PM
+                        const schedParts = x.scheduled_start.split(' ');
+                        if (schedParts.length === 2) {
+                            const timeParts = schedParts[1].split(':');
+                            let hours = parseInt(timeParts[0]);
+                            const minutes = timeParts[1];
+                            const ampm = hours >= 12 ? 'PM' : 'AM';
+                            hours = hours % 12;
+                            if (hours === 0) hours = 12; // Handle midnight
+                            const time12 = hours + ':' + minutes + ' ' + ampm;
+                            $('#schedule_time_display').html('</br>Schedule time: ' + time12);
+                        }
+                        
+                        // Show the countdown div
+                        $('#scheduled_countdown').show();
+                        
+                        // Update countdown immediately
+                        updateScheduledCountdown();
+                        
+                        // Start or restart the countdown interval (every 1 second)
+                        if (countdown_interval !== null) {
+                            clearInterval(countdown_interval);
+                        }
+                        countdown_interval = setInterval(updateScheduledCountdown, 1000);
+                    }
                 }
                 else
                 {
@@ -664,7 +738,20 @@ $(document).ready(function()
                     $("#nav_stop").hide();
                     $("#timer").removeClass("ds-led-timer-active");
                     $('#state').html('<p class="ds-text">'+state+'</p>');
-                    $('#schedule-status').hide()
+                    $('#schedule-status').hide();
+                    $('#profile_selector').show();
+                    $('#running_profile_heading').hide();
+                    
+                    // Clear countdown when leaving SCHEDULED state (back to IDLE)
+                    if (state_last === "SCHEDULED") {
+                        if (countdown_interval !== null) {
+                            clearInterval(countdown_interval);
+                            countdown_interval = null;
+                        }
+                        scheduled_start_time = null;
+                        $('#scheduled_countdown').hide();
+                    }
+                    $('#scheduled_countdown').hide();
                 }
 
                 $('#act_temp').html(parseInt(x.temperature));

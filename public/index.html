@@ -59,6 +59,13 @@
      <button id="btn_edit" type="button" class="btn btn-default" onclick="enterEditMode()"><span class="glyphicon glyphicon-edit"></span></button>
      <button id="btn_new" type="button" class="btn btn-default" onclick="enterNewMode(selected_profile)"><span class="glyphicon glyphicon-plus"></span></button>
     </div>
+    <h4 id="running_profile_heading" style="display:none; margin: 0; padding-top: 8px;" class="pull-left"></h4>
+    <div id="scheduled_countdown" style="display:none; margin: 0; padding-top: 8px;">
+     <p style="margin: 0; font-size: 14px;">
+      <span id="schedule_time_display"></span><br/>
+      <span id="countdown_display"></span>
+     </p>
+    </div>
    <div id="btn_controls" class="pull-right" style="margin-top: 3px">
     <div id="nav_start" class="btn-group" style="display:none">
      <button type="button" class="btn btn-default" style="visibility: hidden;"  onclick="runTaskSimulation();">Simulate</button>
