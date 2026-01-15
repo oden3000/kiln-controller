@@ -308,7 +308,6 @@ function enterEditMode()
     graph.profile.draggable = true;
     graph.plot = $.plot("#graph_container", [ graph.profile, graph.live ], getOptions());
     updateProfileTable();
-    toggleTable();
 }
 
 function leaveEditMode()
@@ -346,18 +345,6 @@ function delPoint()
     graph.profile.data.splice(-1,1)
     graph.plot = $.plot("#graph_container", [ graph.profile, graph.live ], getOptions());
     updateProfileTable();
-}
-
-function toggleTable()
-{
-    if($('#profile_table').css('display') == 'none')
-    {
-        $('#profile_table').slideDown();
-    }
-    else
-    {
-        $('#profile_table').slideUp();
-    }
 }
 
 function saveProfile()
