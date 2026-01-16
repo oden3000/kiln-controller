@@ -13,6 +13,7 @@
  <script src="assets/js/bootstrap.min.js"></script>
  <script src="assets/js/jquery.bootstrap-growl.min.js"></script>
  <script src="assets/js/select2.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
  <script src="assets/js/picoreflow.js"></script>
 
  <link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
@@ -54,6 +55,9 @@
       <span class="metric-number" id="target_temp">---</span>
       <span class="metric-suffix" id="target_temp_scale">&deg;C</span>
      </div>
+     <div class="error-chart-container">
+      <canvas id="errorChart"></canvas>
+     </div>
     </div>
 
     <!-- Cost Card -->
@@ -82,6 +86,10 @@
        <span class="time-completion" id="time_completion">---</span>
       </div>
      </div>
+     <div class="progress-chart-container">
+      <canvas id="progressChart"></canvas>
+      <span class="progress-percent" id="progress_percent">0%</span>
+     </div>
     </div>
 
     <!-- Schedule Card (shown when scheduled) -->
@@ -97,17 +105,8 @@
 
    </div>
 
-   <!-- Status Bar with Progress -->
+   <!-- Status Bar with Indicators -->
    <div class="status-bar">
-
-    <!-- Progress Track -->
-    <div class="progress-track">
-     <div class="progress progress-striped active">
-      <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-       <span class="sr-only"></span>
-      </div>
-     </div>
-    </div>
 
     <!-- System Indicators -->
     <div class="system-indicators">

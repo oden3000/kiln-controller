@@ -18,6 +18,152 @@ var countdown_interval = null;
 var run_start_time = null;
 var run_summary = null;
 var last_run_data = {runtime: 0, cost: 0, kwh: 0, currency_type: '$'};
+var errorChart = null;
+
+function initErrorChart() {
+    var ctx = document.getElementById('errorChart').getContext('2d');
+    errorChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Error (°C)',
+                data: [],
+                borderColor: '#e74c3c',
+                backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                borderWidth: 1.5,
+                pointRadius: 0,
+                pointHoverRadius: 3,
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: false
+                }
+            },
+            scales: {
+                x: {
+                    display: false,
+                    grid: {
+                        display: false
+                    }
+                },
+                y: {
+                    display: true,
+                    position: 'right',
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: '#b9b6af',
+                        font: {
+                            size: 9
+                        },
+                        maxTicksLimit: 3,
+                        callback: function(value) {
+                            return value.toFixed(0) + '°';
+                        }
+                    }
+                }
+            },
+            events: []
+        }
+    });
+}
+
+function updateErrorChart(errorHistory) {
+    if (!errorChart || !errorHistory || errorHistory.length === 0) return;
+
+    var labels = errorHistory.map(function(point) { return point[0]; });
+    var data = errorHistory.map(function(point) { return point[1]; });
+
+    errorChart.data.labels = labels;
+    errorChart.data.datasets[0].data = data;
+    errorChart.update('none');
+}
+
+var progressChart = null;
+
+function initProgressChart() {
+    var ctx = document.getElementById('progressChart').getContext('2d');
+    progressChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Progress'],
+            datasets: [{
+                data: [0],
+                backgroundColor: 'rgba(74, 159, 255, 0.8)',
+                borderColor: '#4A9FFF',
+                borderWidth: 1,
+                borderRadius: 4,
+                barPercentage: 1.0,
+                categoryPercentage: 1.0
+            }, {
+                data: [100],
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderColor: 'rgba(255, 255, 255, 0.2)',
+                borderWidth: 1,
+                borderRadius: 4,
+                barPercentage: 1.0,
+                categoryPercentage: 1.0
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: false
+                }
+            },
+            scales: {
+                x: {
+                    display: false,
+                    stacked: true,
+                    max: 100,
+                    grid: {
+                        display: false
+                    }
+                },
+                y: {
+                    display: false,
+                    stacked: true,
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+}
+
+function updateProgressChart(percentage) {
+    if (!progressChart) return;
+
+    if (percentage > 100) percentage = 100;
+    if (percentage < 0) percentage = 0;
+
+    progressChart.data.datasets[0].data = [percentage];
+    progressChart.data.datasets[1].data = [100 - percentage];
+    progressChart.update('none');
+
+    $('#progress_percent').html(Math.round(percentage) + '%');
+}
 
 function updateScheduledCountdown() {
     if (scheduled_start_time === null) {
@@ -548,6 +694,8 @@ function initDatetimePicker() {
 $(document).ready(function()
 {
     initDatetimePicker();
+    initErrorChart();
+    initProgressChart();
 
     if(!("WebSocket" in window))
     {
@@ -654,6 +802,7 @@ $(document).ready(function()
                         console.log(state);
                         $('#target_temp').html('---');
                         updateProgress(0);
+                        updateProgressChart(0);
 
                         // Calculate actual real-world duration from start time
                         var duration_seconds = run_start_time ? Math.floor((Date.now() - run_start_time.getTime()) / 1000) : 0;
@@ -716,7 +865,9 @@ $(document).ready(function()
                     if (completionHours === 0) completionHours = 12;
                     const completionTime = completionHours + ':' + completionMinutes + ' ' + ampm;
 
-                    updateProgress(parseFloat(x.runtime)/parseFloat(x.totaltime)*100);
+                    var progressPercent = parseFloat(x.runtime)/parseFloat(x.totaltime)*100;
+                    updateProgress(progressPercent);
+                    updateProgressChart(progressPercent);
                     $('#state').html(state);
                     $('#time_remaining').html(eta);
                     $('#time_completion').html(completionTime);
@@ -730,8 +881,8 @@ $(document).ready(function()
                     last_run_data.kwh = x.kwh;
                     last_run_data.currency_type = x.currency_type;
 
-                  
-
+                    // Update error history chart
+                    updateErrorChart(x.error_history);
 
                 }
                 else if (state === "SCHEDULED") {

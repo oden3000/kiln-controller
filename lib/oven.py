@@ -147,10 +147,10 @@ class TempSensorReal(TempSensor):
             return temp
         except ThermocoupleError as tce:
             if tce.ignore:
-                log.error("Problem reading temp (ignored) %s" % (tce.message))
+                log.error(f"Problem reading temp (ignored): {tce.message}")
                 self.status.good()
             else:
-                log.error("Problem reading temp %s" % (tce.message))
+                log.error(f"Problem reading temp: {tce.message} - Error Count: {self.status.error_percent}%")
                 self.status.bad()
         return None
 
@@ -356,6 +356,8 @@ class Oven(threading.Thread):
         self.heat_rate_temps = []
         self.pid = PID(ki=config.pid_ki, kd=config.pid_kd, kp=config.pid_kp)
         self.catching_up = False
+        self.error_history = []  # List of [runtime, error] for charting
+        self.last_error_history_time = 0  # Track when we last recorded error
 
     @staticmethod
     def get_start_from_temperature(profile, temp):
@@ -532,8 +534,22 @@ class Oven(threading.Thread):
             'scheduled_start': scheduled_start,
             'catching_up': self.catching_up,
             'error_percent': self.board.temp_sensor.status.error_percent(),
+            'error_history': self.error_history,
         }
         return state
+
+    def record_error_history(self):
+        '''Record PID error every 20 seconds for charting'''
+        if self.state != "RUNNING":
+            return
+        # Only record every 20 seconds
+        if self.runtime - self.last_error_history_time >= 20:
+            err = self.pid.pidstats.get('err', 0)
+            self.error_history.append([self.runtime, round(err, 2)])
+            self.last_error_history_time = self.runtime
+            # Keep last 180 data points (1 hour at 20 second intervals)
+            if len(self.error_history) > 180:
+                self.error_history = self.error_history[-180:]
 
     def save_state(self):
         with open(config.automatic_restart_state_file, 'w', encoding='utf-8') as f:
@@ -628,6 +644,7 @@ class Oven(threading.Thread):
                 self.update_runtime()
                 self.update_target_temp()
                 self.heat_then_cool()
+                self.record_error_history()
                 self.reset_if_emergency()
                 self.reset_if_schedule_ended()
 
