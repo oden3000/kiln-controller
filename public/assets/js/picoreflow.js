@@ -307,6 +307,11 @@ function abortTask()
     ws_control.send(JSON.stringify(cmd));
 }
 
+function confirmStopKiln()
+{
+    abortTask();
+}
+
 function enterNewMode()
 {
     state="EDIT"

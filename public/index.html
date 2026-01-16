@@ -172,7 +172,7 @@
         <span class="control-btn-text">Start</span>
        </button>
       </div>
-      <button id="nav_stop" type="button" class="control-btn control-btn-stop" onclick="abortTask()" style="display:none">
+      <button id="nav_stop" type="button" class="control-btn control-btn-stop" data-toggle="modal" data-target="#stopKilnModal" style="display:none">
        <span class="glyphicon glyphicon-stop"></span>
        <span class="control-btn-text">Stop</span>
       </button>
@@ -291,6 +291,26 @@
      <div class="btn-group" style="width: 100%">
       <button type="button" class="btn btn-danger" style="width: 50%" data-dismiss="modal">No, take me back</button>
       <button type="button" class="btn btn-success" style="width: 50%" data-dismiss="modal" onclick="deleteProfile()">Yes, delete the profile</button>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <div id="stopKilnModal" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+   <div class="modal-content">
+    <div class="modal-header">
+     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+     <h3 class="modal-title" id="stopKilnModalLabel">Stop the kiln?</h3>
+    </div>
+    <div class="modal-body">
+     Are you sure you want to stop the kiln?
+    </div>
+    <div class="modal-footer">
+     <div class="btn-group" style="width: 100%">
+      <button type="button" class="btn btn-danger" style="width: 50%" data-dismiss="modal">No, take me back</button>
+      <button type="button" class="btn btn-success" style="width: 50%" data-dismiss="modal" onclick="confirmStopKiln()">Yes, stop the kiln</button>
      </div>
     </div>
    </div>
