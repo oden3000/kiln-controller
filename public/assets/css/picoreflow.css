@@ -81,7 +81,7 @@ body {
 .metric-value-hero {
     font-family: "Digi", monospace;
     font-size: 56px;
-    color: #d8d3c5;
+    color: #666;
     text-shadow:
         0 0 30px rgba(0, 0, 0, 0.8),
         0 0 15px rgba(216, 211, 197, 0.3);
@@ -127,13 +127,17 @@ body {
 }
 
 .metric-card {
-    background: #3F3E3A url('/picoreflow/assets/images/panel_bg.png') repeat;
+    background: linear-gradient(135deg, #3F3E3A 0%, #2d2c29 100%);
+    background-image:
+        linear-gradient(135deg, rgba(63, 62, 58, 0.95) 0%, rgba(45, 44, 41, 0.95) 100%),
+        url('/picoreflow/assets/images/panel_bg.png');
+    background-blend-mode: overlay;
     border-radius: 6px;
     padding: 10px 12px;
     box-shadow:
         0 2px 3px rgba(0,0,0,0.3),
-        inset 0 0 20px rgba(0,0,0,0.3);
-    border: 1px solid rgba(185, 182, 175, 0.2);
+        inset 0 0 40px rgba(0,0,0,0.4);
+    border: 1px solid rgba(185, 182, 175, 0.3);
     transition: all 0.3s ease;
     position: relative;
 }
@@ -142,7 +146,7 @@ body {
     transform: translateY(-1px);
     box-shadow:
         0 3px 6px rgba(0,0,0,0.4),
-        inset 0 0 20px rgba(0,0,0,0.3);
+        inset 0 0 40px rgba(0,0,0,0.4);
 }
 
 .metric-card-header {
@@ -176,7 +180,7 @@ body {
 .metric-number {
     font-family: "Digi", monospace;
     font-size: 28px;
-    color: #d8d3c5;
+    color: #666;
     text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
     letter-spacing: 0px;
     line-height: 1;
@@ -192,7 +196,7 @@ body {
 .time-remaining {
     font-family: "Digi", monospace;
     font-size: 22px;
-    color: #d8d3c5;
+    color: #666;
     text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
     letter-spacing: 0px;
     line-height: 1;
@@ -267,7 +271,7 @@ body {
 .schedule-time {
     font-family: Arial, sans-serif;
     font-size: 11px;
-    color: #d8d3c5;
+    color: #666;
     line-height: 1.3;
 }
 
@@ -276,13 +280,17 @@ body {
    ============================================================================ */
 
 .status-bar {
-    background: #3F3E3A url('/picoreflow/assets/images/panel_bg.png') repeat;
+    background: linear-gradient(135deg, #3F3E3A 0%, #2d2c29 100%);
+    background-image:
+        linear-gradient(135deg, rgba(63, 62, 58, 0.95) 0%, rgba(45, 44, 41, 0.95) 100%),
+        url('/picoreflow/assets/images/panel_bg.png');
+    background-blend-mode: overlay;
     border-radius: 6px;
     overflow: hidden;
     box-shadow:
         0 2px 3px rgba(0,0,0,0.3),
-        inset 0 0 20px rgba(0,0,0,0.3);
-    border: 1px solid rgba(185, 182, 175, 0.2);
+        inset 0 0 40px rgba(0,0,0,0.4);
+    border: 1px solid rgba(185, 182, 175, 0.3);
 }
 
 .progress-track {
@@ -290,7 +298,8 @@ body {
 }
 
 .system-indicators {
-    padding: 10px 12px;
+    padding: 0px 12px;
+    padding-bottom: 15px;
     border-top: 1px solid rgba(185, 182, 175, 0.15);
 }
 
@@ -406,15 +415,11 @@ body {
 
 .bar {
     width:70%;
-    //padding: 2px 2px 0px 2px;
-    //display:block;
     display: inline-block;
     font-family:arial;
     font-size:12px;
     background-color:#ca3c38;
     color:#000;
-    //position:absolute;
-    //bottom:0;
     }
 
 .progress {
@@ -450,14 +455,191 @@ body {
 
 .panel-heading {
     background: #fafafa url('/picoreflow/assets/images/page_bg.png') repeat-x;
-    overflow: hidden;
-    padding: 10px;
-    -webkit-border-top-left-radius: 5px;
-    -webkit-border-top-right-radius: 5px;
-    -moz-border-radius-topleft: 5px;
-    -moz-border-radius-topright: 5px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    padding: 12px;
+    -webkit-border-top-left-radius: 7px;
+    -webkit-border-top-right-radius: 7px;
+    -moz-border-radius-topleft: 7px;
+    -moz-border-radius-topright: 7px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* ============================================================================
+   PROFILE CONTROL BAR - Modern Design
+   ============================================================================ */
+
+.profile-control-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.profile-selector-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 2;
+    min-width: 0;
+    max-width: 100%;
+    background: transparent;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.profile-selector-label {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #666;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.profile-selector-input {
+    flex: 1;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.profile-selector-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+
+/* Running Profile Display */
+.running-profile-display,
+.scheduled-profile-display {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+}
+
+.running-profile-label,
+.scheduled-profile-label {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #666;
+    font-weight: 600;
+}
+
+.running-profile-name {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    font-weight: 700;
+}
+
+.scheduled-profile-info {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #333;
+    line-height: 1.4;
+}
+
+.scheduled-profile-info #schedule_time_display {
+    font-weight: 600;
+}
+
+.scheduled-profile-info #countdown_display {
+    color: #666;
+    font-size: 12px;
+}
+
+/* Control Buttons Section */
+.control-buttons-section {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* Control Button Base Styles - All styled like start button */
+.control-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 14px;
+    border: none;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: linear-gradient(135deg, #a4b357 0%, #75890c 100%);
+    color: #fff;
+    border: 1px solid rgba(117, 137, 12, 0.5);
+}
+
+.control-btn:hover {
+    background: linear-gradient(135deg, #b5c568 0%, #86a01d 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(117, 137, 12, 0.4);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(117, 137, 12, 0.3);
+}
+
+.control-btn .glyphicon {
+    font-size: 12px;
+}
+
+.control-btn-text {
+    display: none;
+}
+
+/* Small Control Buttons */
+.control-btn-small {
+    height: 32px;
+    width: 32px;
+    padding: 0;
+}
+
+/* Stop button - red variant */
+.control-btn-stop {
+    background: linear-gradient(135deg, #ce3914 0%, #a32600 100%);
+    border-color: rgba(206, 57, 20, 0.5);
+}
+
+.control-btn-stop:hover {
+    background: linear-gradient(135deg, #df4a25 0%, #b43711 100%);
+    box-shadow: 0 3px 8px rgba(206, 57, 20, 0.4);
+}
+
+.control-btn-stop:active {
+    box-shadow: 0 1px 2px rgba(206, 57, 20, 0.3);
+}
+
+/* Danger button variant for delete */
+.control-btn-danger {
+    background: linear-gradient(135deg, #ce3914 0%, #a32600 100%);
+    border-color: rgba(206, 57, 20, 0.5);
+}
+
+.control-btn-danger:hover {
+    background: linear-gradient(135deg, #df4a25 0%, #b43711 100%);
+    box-shadow: 0 3px 8px rgba(206, 57, 20, 0.4);
+}
+
+.control-btn-danger:active {
+    box-shadow: 0 1px 2px rgba(206, 57, 20, 0.3);
 }
 
 .panel-body {
@@ -471,36 +653,149 @@ body {
     background: rgba(0,0,0,0.2)
 }
 
-#profile_selector {
-    border: 1px solid rgb(194, 194, 194);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    background: rgb(229,229,229);
-    background: -moz-linear-gradient(top, rgba(229,229,229,1) 0%, rgba(255,255,255,1) 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(229,229,229,1)), color-stop(100%,rgba(255,255,255,1)));
-    background: -webkit-linear-gradient(top, rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%);
-    background: -o-linear-gradient(top, rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%);
-    background: -ms-linear-gradient(top, rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%);
-    background: linear-gradient(to bottom, rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', endColorstr='#ffffff',GradientType=0 );
-    padding: 5px;
-    padding-bottom: 3px;
-    padding-top: 3px;
-    -moz-box-shadow: 0 0 1.1em 0 rgba(0,0,0,0.05),inset 0 0 9px 2px #000;
-    -webkit-box-shadow: 0 0 1.5em 0 rgba(0,0,0,0.05),inset 0 0 0 0 #000;
-    box-shadow: 0 0 1.1em 0 rgba(0,0,0,0.05),inset 0 0 0 0 #000;
+/* Edit Mode Bar */
+.edit-mode-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.edit-section {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.edit-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.edit-label {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #666;
+    font-weight: 600;
+}
+
+.edit-input {
+    height: 36px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    color: #333;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: rgba(117, 137, 12, 0.5);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(117, 137, 12, 0.1);
+}
+
+.edit-input::placeholder {
+    color: #999;
+}
+
+.edit-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.edit-actions-left,
+.edit-actions-right {
+    display: flex;
+    gap: 8px;
 }
 
 .select2-container {
     position: relative;
-    top: -3px;
-    width: 190px;
-    height: 34px;
+    width: 100% !important;
+    max-width: 100%;
+    height: 32px;
 }
 
 .select2-container .select2-choice {
+    height: 32px;
     line-height: 32px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    font-size: 14px;
+    padding: 0 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.select2-container .select2-choice > .select2-chosen {
+    margin-right: 26px;
+}
+
+.select2-container .select2-choice:hover {
+    background: #f9f9f9;
+    border-color: #ccc;
+}
+
+.select2-container .select2-choice .select2-arrow {
+    background: transparent;
+    border-left: none;
+}
+
+.select2-container .select2-choice .select2-arrow b {
+    background-position: 0 3px;
+}
+
+.select2-drop {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-top: 4px;
+    min-width: 200px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.select2-drop-active {
+    border: 1px solid rgba(117, 137, 12, 0.4);
+}
+
+.select2-results {
+    color: #333;
+    background: transparent;
+    padding: 4px 0;
+    max-height: 300px;
+}
+
+.select2-results .select2-result {
+    padding: 8px 12px;
+}
+
+.select2-results .select2-result:hover {
+    background: #f5f5f5;
+}
+
+.select2-results .select2-highlighted {
+    background: linear-gradient(135deg, #a4b357 0%, #75890c 100%);
+    color: #fff;
+}
+
+.select2-no-results {
+    background: transparent;
+    color: #999;
+    padding: 12px;
 }
 
 .graph {
@@ -617,10 +912,87 @@ body {
 }
 
 /* ============================================================================
-   RESPONSIVE DESIGN - Mobile First Card Layout
+   PROFILE TABLE - Schedule Points Table
    ============================================================================ */
 
-/* Base Mobile Styles (Default) */
+#profile_table h3 {
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+#profile_table .table {
+    background: transparent;
+    margin-bottom: 0;
+}
+
+#profile_table .table th {
+    color: #b9b6af;
+    font-size: 12px;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(185, 182, 175, 0.3);
+    padding: 10px 8px;
+}
+
+#profile_table .table td {
+    color: #666;
+    border-top: 1px solid rgba(185, 182, 175, 0.15);
+    padding: 2px 2px;
+    vertical-align: middle;
+}
+
+#profile_table .table td h4 {
+    color: #75890c;
+    margin: 0;
+    font-size: 16px;
+}
+
+#profile_table .form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(185, 182, 175, 0.3);
+    color: #666;
+    font-size: 13px;
+}
+
+#profile_table .form-control:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #75890c;
+    color: #666;
+    box-shadow: 0 0 0 2px rgba(117, 137, 12, 0.2);
+}
+
+#profile_table .input-group-addon {
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+}
+
+#profile_table .ds-trend {
+    width: min-content;
+}
+
+#profile_table .btn-danger {
+    background: linear-gradient(135deg, #ce3914 0%, #a32600 100%);
+    border: 1px solid rgba(206, 57, 20, 0.5);
+    padding: 6px 12px;
+}
+
+#profile_table .btn-danger:hover {
+    background: linear-gradient(135deg, #df4a25 0%, #b43711 100%);
+}
+
+/* ============================================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================================
+   Mobile First Approach:
+   - 0-600px: Extra Small Phones
+   - 601-767px: Medium Tablets
+   - 768-1399px: Desktop
+   - 1400px+: Large Desktop
+   ============================================================================ */
+
+/* Mobile & Tablets (0-767px) */
 @media (max-width: 767px) {
     .container {
         padding-left: 8px;
@@ -684,52 +1056,161 @@ body {
         bottom: -12px;
     }
 
-    .system-indicators {
-        padding: 12px 8px;
-    }
-}
 
-/* Extra Small Phones - Stack Cards Vertically */
-@media (max-width: 380px) {
-    .metric-value-hero {
-        font-size: 42px;
+    .profile-selector-section {
+        flex: 2;
     }
 
-    .metric-unit-hero {
-        font-size: 18px;
+    .running-profile-display,
+    .scheduled-profile-display {
+        flex: 1;
     }
 
-    .metric-label {
-        font-size: 8px;
-        margin-bottom: 5px;
+    /* Responsive Profile Table - Card Layout */
+    #profile_table h3 {
+        display: none;
     }
 
-    .metric-sublabel {
+    #profile_table .table thead {
+        display: none;
+    }
+
+    #profile_table .table-striped thead,
+    #profile_table .table-striped tr:has(th) {
+        display: none;
+    }
+
+    #profile_table .table,
+    #profile_table .table tbody,
+    #profile_table .table tr,
+    #profile_table .table td {
+        display: block;
+        width: 100%;
+    }
+
+    #profile_table .table tr {
+        border: 1px solid rgba(185, 182, 175, 0.3);
+        border-radius: 6px;
+        margin-bottom: 12px;
+        padding: 12px;
+        position: relative;
+    }
+
+    #profile_table .table td {
+        border: none;
+        padding: 0px 0;
+        text-align: left;
+        position: relative;
+        padding-left: 45%;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+    }
+
+    #profile_table .table td:before {
+        position: absolute;
+        left: 0;
+        width: 40%;
+        padding-right: 10px;
+        font-weight: 600;
+        color: #b9b6af;
         font-size: 11px;
-        margin-top: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
     }
 
-    .metrics-grid {
-        grid-template-columns: 1fr;
+    /* Column labels */
+    #profile_table .table td:nth-child(2):before {
+        content: 'Duration';
     }
 
-    .metric-card {
-        padding: 10px 12px;
+    #profile_table .table td:nth-child(3):before {
+        content: 'Time';
     }
 
-    .metric-number {
-        font-size: 26px;
+    #profile_table .table td:nth-child(4):before {
+        content: 'Temperature';
     }
 
-    .metric-state {
-        font-size: 16px;
+    #profile_table .table td:nth-child(5):before {
+        content: 'Slope';
+    }
+
+    /* Row number - make it a badge in top right */
+    #profile_table .table td:first-child {
+        padding-left: 20px;
+        width: 50px;
+
+        z-index: 99;
+        min-height: auto;
+    }
+
+    #profile_table .table td:first-child:before {
+        display: none;
+    }
+
+    #profile_table .table td:first-child h4 {
+        background: rgba(117, 137, 12, 0.3);
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+        position: inherit;
+    }
+
+    /* Delete button - full width at bottom */
+    #profile_table .table td:last-child {
+        padding-left: 0;
+        margin-top: 8px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(185, 182, 175, 0.15);
+    }
+
+    #profile_table .table td:last-child:before {
+        display: none;
+    }
+
+    #profile_table .table td:last-child .btn {
+        width: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-left: auto;
+    }
+
+    #profile_table .table td:last-child .btn:after {
+        content: 'Delete Point';
+    }
+
+    /* Form inputs - full width */
+    #profile_table .form-control {
+        width: 100% !important;
+        max-width: 100%;
+    }
+
+    #profile_table .input-group {
+        width: 100%;
+        display: flex;
+    }
+
+    #profile_table .ds-input {
+        flex: 1;
     }
 }
 
-
-
-/* Desktop - Side by Side Layout */
+/* Desktop (768-1399px) */
 @media (min-width: 768px) {
+    .profile-selector-section {
+        flex: 3;
+    }
+
+    .running-profile-display,
+    .scheduled-profile-display {
+        flex: 2;
+    }
+
     .kiln-dashboard {
         display: grid;
         grid-template-columns: 1fr 1.5fr;
@@ -785,20 +1266,19 @@ body {
     .metric-state {
         font-size: 20px;
     }
-
-    .indicator {
-        font-size: 24px;
-        padding: 7px;
-    }
-
-    .indicator::after {
-        font-size: 7px;
-        bottom: -15px;
-    }
 }
 
-/* Large Desktops - Expanded Layout */
+/* Large Desktops - Expanded Layout (1400px+) */
 @media (min-width: 1400px) {
+    .profile-selector-section {
+        flex: 4;
+    }
+
+    .running-profile-display,
+    .scheduled-profile-display {
+        flex: 2;
+    }
+
     .metric-hero {
         min-height: 220px;
     }

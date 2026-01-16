@@ -146,7 +146,7 @@ function updateProfileTable()
 
     var html = '<h3>Schedule Points</h3><div class="table-responsive" style="scroll: none">'
         html +='<table class="table table-striped">';
-        html += '<tr><th style="width: 50px">#</th><th>Step Duration in ' + time_scale_long+ '</th><th>Step Time in ' + time_scale_long+ '</th><th>Target Temperature in °'+temp_scale_display+'</th><th>Slope in &deg;'+temp_scale_display+'/'+time_scale_slope+'</th><th></th></tr>';
+        html += '<tr><th style="width: 50px">#</th><th>Duration (' + time_scale_long+ ')</th><th>Time (' + time_scale_long+ ')</th><th>Target in °'+temp_scale_display+'</th><th>Slope in &deg;'+temp_scale_display+'/'+time_scale_slope+'</th><th></th></tr>';
 
     for(var i=0; i<graph.profile.data.length;i++)
     {
@@ -661,7 +661,8 @@ $(document).ready(function()
                     $("#timer").removeClass("status-led-timer-active");
                     $('#schedule-status').hide();
                     $('#profile_selector').hide();
-                    $('#running_profile_heading').show().html('Running: <strong>' + x.profile + '</strong>');
+                    $('#running_profile_heading').show();
+                    $('#running_profile_heading .running-profile-name').html(x.profile);
                     
                     // If transitioning from SCHEDULED to RUNNING, hide the countdown
                     if (state_last === "SCHEDULED") {
@@ -705,10 +706,9 @@ $(document).ready(function()
                     $('#timer').addClass("status-led-timer-active"); // Start blinking timer symbol
                     $('#state').html(state);
                     $('#time_remaining').html('---');
-                    $('#schedule-status').html('Start at: ' + x.scheduled_start);
                     $('#schedule-status').show();
                     $('#profile_selector').hide();
-                    $('#running_profile_heading').show().html('Scheduled: <strong>' + x.profile + '</strong>');
+                    $('#running_profile_heading').hide();
                     
                     // Parse scheduled_start time (format: "YYYY-MM-DD HH:MM")
                     if (x.scheduled_start) {
