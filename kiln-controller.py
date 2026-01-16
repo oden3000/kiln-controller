@@ -366,12 +366,28 @@ def normalize_temp_units(profiles):
     return normalized
 
 def delete_profile(profile):
-    profile_json = json.dumps(profile)
-    filename = profile['name']+".json"
-    filepath = os.path.join(profile_path, filename)
-    os.remove(filepath)
-    log.info("Deleted %s" % filepath)
-    return True
+    try:
+        profile_json = json.dumps(profile)
+        filename = profile['name'] + ".json"
+        filepath = os.path.join(profile_path, filename)
+
+        if not os.path.exists(filepath):
+            log.error(f"Profile file not found: {filepath}")
+            return False
+
+        os.remove(filepath)
+        log.info(f"Deleted {filepath}")
+        return True
+
+    except KeyError as e:
+        log.error(f"Invalid profile object: missing key {e}")
+        return False
+    except OSError as e:
+        log.error(f"Error deleting profile file: {e}")
+        return False
+    except Exception as e:
+        log.error(f"Unexpected error in delete_profile: {type(e).__name__}: {e}")
+        return False
 
 def get_config():
     return json.dumps({"temp_scale": config.temp_scale,
