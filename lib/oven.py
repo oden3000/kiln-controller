@@ -339,6 +339,7 @@ class Oven(threading.Thread):
 
     def reset(self):
         self.cost = 0
+        self.kwh = 0
         self.state = "IDLE"
         if self.scheduled_run_timer and self.scheduled_run_timer.is_alive():
             log.info("Cancelling previously scheduled run")
@@ -350,6 +351,7 @@ class Oven(threading.Thread):
         self.totaltime = 0
         self.target = 0
         self.heat = 0
+        self.heat_on_proportion = 0  # Track actual power for cost calculation
         self.heat_rate = 0
         self.heat_rate_temps = []
         self.pid = PID(ki=config.pid_ki, kd=config.pid_kd, kp=config.pid_kp)
@@ -489,8 +491,12 @@ class Oven(threading.Thread):
             self.abort_run()
 
     def update_cost(self):
-        if self.heat:
-            cost = (config.kwh_rate * config.kw_elements) * ((self.heat)/3600)
+        if self.heat_on_proportion > 0:
+            # Calculate KWH: kw_elements is in kilowatts, self.heat_on_proportion is in seconds
+            # heat_on_proportion represents the actual seconds the elements were on during this cycle
+            kwh = (config.kw_elements) * ((self.heat_on_proportion)/3600)
+            cost = (config.kwh_rate * kwh)
+            self.kwh = self.kwh + kwh
         else:
             cost = 0
         self.cost = self.cost + cost
@@ -511,6 +517,7 @@ class Oven(threading.Thread):
 
         state = {
             'cost': self.cost,
+            'kwh': self.kwh,
             'runtime': self.runtime,
             'temperature': temp,
             'target': self.target,
@@ -524,7 +531,7 @@ class Oven(threading.Thread):
             'pidstats': self.pid.pidstats,
             'scheduled_start': scheduled_start,
             'catching_up': self.catching_up,
-            'error_percent': self.status.error_percent(),
+            'error_percent': self.board.temp_sensor.status.error_percent(),
         }
         return state
 
@@ -547,7 +554,7 @@ class Oven(threading.Thread):
             else:
                 log.info("State file is %.1f minutes old, exceeds automatic_restart_window of %d minutes. Automatic restart will NOT be attempted." % (minutes, config.automatic_restart_window))
                 return True
-        log.info("State file does not exist at %s. Automatic restart will NOT be attempted." % config.automatic_restart_state_file)
+        duplog.info("State file does not exist at %s. Automatic restart will NOT be attempted." % config.automatic_restart_state_file)
         return True
 
     def save_automatic_restart_state(self):
@@ -564,12 +571,20 @@ class Oven(threading.Thread):
             duplog.info("automatic restart not possible. state file does not exist or is too old.")
             return False
 
-        with open(config.automatic_restart_state_file) as infile:
-            d = json.load(infile)
-        if d["state"] != "RUNNING":
-            duplog.info("automatic restart not possible. state = %s" % (d["state"]))
+        try:
+            with open(config.automatic_restart_state_file) as infile:
+                d = json.load(infile)
+            if d["state"] != "RUNNING":
+                duplog.info("automatic restart not possible. state = %s" % (d["state"]))
+                return False
+            return True
+        except (json.JSONDecodeError, KeyError) as e:
+            log.info("automatic restart not possible. state file is invalid: %s. Removing corrupted file." % (e))
+            try:
+                os.remove(config.automatic_restart_state_file)
+            except OSError:
+                pass
             return False
-        return True
 
     def automatic_restart(self):
         with open(config.automatic_restart_state_file) as infile: d = json.load(infile)
@@ -692,6 +707,9 @@ class SimulatedOven(Oven):
         self.heat = 0.0
         if heat_on > 0:
             self.heat = heat_on
+        
+        # Track actual heat on time for cost calculation
+        self.heat_on_proportion = heat_on
 
         log.info("simulation: -> %dW heater: %.0f -> %dW oven: %.0f -> %dW env" % (int(self.p_heat * pid),
             self.t_h,
@@ -752,6 +770,9 @@ class RealOven(Oven):
         self.heat = 0.0
         if heat_on > 0:
             self.heat = 1.0
+        
+        # Track actual heat on time for cost calculation
+        self.heat_on_proportion = heat_on
 
         if heat_on:
             self.output.heat(heat_on)

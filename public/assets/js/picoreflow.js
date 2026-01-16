@@ -700,6 +700,7 @@ $(document).ready(function()
                     $('#time_completion').html(completionTime);
                     $('#target_temp').html(parseInt(x.target));
                     $('#cost').html(x.currency_type + parseFloat(x.cost).toFixed(2));
+                    $('#kwh').html(parseFloat(x.kwh).toFixed(2));
 
                   
 
