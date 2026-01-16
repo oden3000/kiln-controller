@@ -288,6 +288,9 @@ throttle_percent = 20
 #   pid_kp = 15
 #   pid_ki = 100
 #   simulate = False
+#   # For hardware settings, you can use either board.D## or GPIO numbers:
+#   spi_sclk  = board.D17    # or spi_sclk = 17
+#   gpio_heat = board.D23    # or gpio_heat = 23
 #
 # Add config_custom.py to .gitignore so it's not checked into version control
 try:
@@ -304,9 +307,18 @@ try:
         spec.loader.exec_module(custom_config)
         
         # Get all variables from custom_config that don't start with underscore
-        custom_settings = {name: getattr(custom_config, name) 
-                          for name in dir(custom_config) 
-                          if not name.startswith('_')}
+        # and exclude imported modules/functions
+        custom_settings = {}
+        for name in dir(custom_config):
+            if not name.startswith('_'):
+                value = getattr(custom_config, name)
+                # Skip imported modules, functions, and built-in types
+                if not (hasattr(value, '__module__') and 
+                       (callable(value) and not isinstance(value, type))):
+                    # Skip if it's a module (except board which we want to allow)
+                    if name != 'board' and hasattr(value, '__file__'):
+                        continue
+                    custom_settings[name] = value
         
         # Override current module's settings
         current_module = sys.modules[__name__]
