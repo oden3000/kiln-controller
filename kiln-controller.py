@@ -390,11 +390,14 @@ def delete_profile(profile):
         return False
 
 def get_config():
-    return json.dumps({"temp_scale": config.temp_scale,
+    return json.dumps({
+        "temp_scale": config.temp_scale,
         "time_scale_slope": config.time_scale_slope,
         "time_scale_profile": config.time_scale_profile,
         "kwh_rate": config.kwh_rate,
-        "currency_type": config.currency_type})
+        "currency_type": config.currency_type,
+        "kw_elements": config.kw_elements
+    })
 
 def main():
     ip = "0.0.0.0"

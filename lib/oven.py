@@ -922,7 +922,9 @@ class PID():
                     log.info("max heating throttled at %d percent below %d degrees to prevent overshoot" % (config.throttle_percent,config.throttle_below_temp))
         else:
             icomp = (error * timeDelta * (1/self.ki))
-            self.iterm += (error * timeDelta * (1/self.ki))
+            # Apply anti-windup: only accumulate integral when output not saturated
+            if 0 < output < 1:
+                self.iterm += (error * timeDelta * (1/self.ki))
             dErr = (error - self.lastErr) / timeDelta
             output = self.kp * error + self.iterm + self.kd * dErr
             output = sorted([-1 * window_size, output, window_size])[1]
