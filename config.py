@@ -204,7 +204,7 @@ thermocouple_offset=0
 # The larger the number, the more load on the board. K type 
 # thermocouples have a precision of about 1/2 degree C. 
 # The median of these samples is used for the temperature.
-temperature_average_samples = 10 
+temperature_average_samples = 5
 
 # Thermocouple AC frequency filtering - set to True if in a 50Hz locale, else leave at False for 60Hz locale
 ac_freq_50hz = False
@@ -237,6 +237,8 @@ ignore_tc_unknown_error = False
 # This overrides all possible thermocouple errors and prevents the 
 # process from exiting.
 ignore_tc_too_many_errors = False
+
+thermocouple_error_limit = 30 # number of errors in the temperature_average_samples * 2 window before failing
 
 ########################################################################
 # automatic restarts - if you have a power brown-out and the raspberry pi

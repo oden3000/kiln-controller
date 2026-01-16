@@ -192,7 +192,8 @@ class ThermocoupleTracker(object):
     def __init__(self):
         self.size = config.temperature_average_samples * 2 
         self.status = [True for i in range(self.size)]
-        self.limit = 30
+        # Use configurable error limit from config, default to 30 if not set
+        self.limit = getattr(config, 'thermocouple_error_limit')
 
     def good(self):
         '''True is good!'''
