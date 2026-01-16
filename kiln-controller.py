@@ -136,7 +136,9 @@ def run_profile(profile, startat=0):
 
 @app.route('/picoreflow/:filename#.*#')
 def send_static(filename):
-    log.debug("serving %s" % filename)
+    bottle.response.cache_control = 'no-cache, no-store, must-revalidate'
+    bottle.response.pragma = 'no-cache'
+    bottle.response.expires = 0
     return bottle.static_file(filename, root=os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])), "public"))
 
 
@@ -144,7 +146,7 @@ def get_websocket_from_request():
     env = bottle.request.environ
     wsock = env.get('wsgi.websocket')
     if not wsock:
-        abort(400, 'Expected WebSocket request.')
+        bottle.abort(400, 'Expected WebSocket request.')
     return wsock
 
 
