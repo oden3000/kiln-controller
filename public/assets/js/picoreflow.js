@@ -230,8 +230,12 @@ function updateProfile(id)
     selected_profile_name = profiles[id].name;
     selected_profile_description = profiles[id].description;
     var job_seconds = profiles[id].data.length === 0 ? 0 : parseInt(profiles[id].data[profiles[id].data.length-1][0]);
-    var kwh = (3850*job_seconds/3600/1000).toFixed(2);
-    var cost =  (kwh*kwh_rate).toFixed(2);
+    // Use configured kw_elements from backend config if available, otherwise default to 9.460 kW
+    var kw_elements = typeof window.kw_elements !== 'undefined' ? window.kw_elements : 9.460;
+
+    // Estimate energy usage assuming full power (worst-case)
+    var kwh = (kw_elements * job_seconds / 3600).toFixed(2);
+    var cost = (kwh * kwh_rate).toFixed(2);
     var job_time = new Date(job_seconds * 1000).toISOString().substr(11, 8);
     $('#sel_prof').html(profiles[id].name);
     $('#sel_prof_eta').html(job_time);
