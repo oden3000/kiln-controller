@@ -675,12 +675,24 @@ $(document).ready(function()
 
                     left = parseInt(x.totaltime-x.runtime);
                     eta = new Date(left * 1000).toISOString().substr(11, 8);
+                    
+                    // Calculate actual completion time (hours:minutes)
+                    const completionMs = Date.now() + (left * 1000);
+                    const completionDate = new Date(completionMs);
+                    let completionHours = completionDate.getHours();
+                    const completionMinutes = String(completionDate.getMinutes()).padStart(2, '0');
+                    const ampm = completionHours >= 12 ? 'PM' : 'AM';
+                    completionHours = completionHours % 12;
+                    if (completionHours === 0) completionHours = 12;
+                    const completionTime = completionHours + ':' + completionMinutes + ' ' + ampm;
 
                     updateProgress(parseFloat(x.runtime)/parseFloat(x.totaltime)*100);
                     $('#state').html(state);
                     $('#time_remaining').html(eta);
+                    $('#time_completion').html(completionTime);
                     $('#target_temp').html(parseInt(x.target));
                     $('#cost').html(x.currency_type + parseFloat(x.cost).toFixed(2));
+
                   
 
 
@@ -757,8 +769,13 @@ $(document).ready(function()
                 if (heat_rate < -9999) { heat_rate = -9999; }
                 if (typeof x.pidstats !== 'undefined' && x.pidstats.out > 0.05) {
                     $('#heat').addClass("status-led-heat-active");
+                    // Show heating percentage
+                    var heat_percent = Math.round(x.pidstats.out * 100);
+                    $('#heat_percentage').html(heat_percent + '%').show();
                 } else {
                     $('#heat').removeClass("status-led-heat-active");
+                    // Hide percentage when not heating
+                    $('#heat_percentage').hide();
                 }
                 if (x.cool > 0.5) { $('#cool').addClass("status-led-cool-active"); } else { $('#cool').removeClass("status-led-cool-active"); }
                 if (x.air > 0.5) { $('#air').addClass("status-led-air-active"); } else { $('#air').removeClass("status-led-air-active"); }

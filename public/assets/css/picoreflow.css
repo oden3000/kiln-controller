@@ -122,8 +122,8 @@ body {
 
 .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 5px;
 }
 
 .metric-card {
@@ -178,6 +178,30 @@ body {
     font-size: 28px;
     color: #d8d3c5;
     text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    letter-spacing: 0px;
+    line-height: 1;
+}
+
+/* Time Display - Two lines */
+.time-display {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.time-remaining {
+    font-family: "Digi", monospace;
+    font-size: 22px;
+    color: #d8d3c5;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    letter-spacing: 0px;
+    line-height: 1;
+}
+
+.time-completion {
+    font-family: "Digi", monospace;
+    font-size: 14px;
+    color: #b9b6af;
     letter-spacing: 0px;
     line-height: 1;
 }
@@ -275,6 +299,23 @@ body {
     justify-content: space-around;
     align-items: center;
     gap: 6px;
+}
+
+.indicator-with-label {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.indicator-percentage {
+    font-size: 9px;
+    font-weight: bold;
+    color: #FF6B35;
+    margin-top: -12px;
+    font-family: Arial, sans-serif;
+    text-shadow: 0 0 3px #000;
 }
 
 .indicator {
@@ -613,8 +654,8 @@ body {
     }
 
     .metrics-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
     }
 
     .metric-card {
@@ -685,62 +726,10 @@ body {
     }
 }
 
-/* Tablets - 3 Column Grid */
-@media (min-width: 768px) and (max-width: 1023px) {
-    .kiln-dashboard {
-        gap: 10px;
-    }
 
-    .metric-hero {
-        padding: 18px 20px;
-    }
-
-    .metric-value-hero {
-        font-size: 64px;
-    }
-
-    .metric-unit-hero {
-        font-size: 28px;
-    }
-
-    .metric-label {
-        font-size: 11px;
-        margin-bottom: 10px;
-    }
-
-    .metric-sublabel {
-        font-size: 16px;
-        margin-top: 10px;
-    }
-
-    .metrics-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-    }
-
-    .metric-card {
-        padding: 12px 14px;
-    }
-
-    .metric-number {
-        font-size: 32px;
-    }
-
-    .metric-suffix {
-        font-size: 13px;
-    }
-
-    .metric-state {
-        font-size: 20px;
-    }
-
-    .indicator {
-        font-size: 24px;
-    }
-}
 
 /* Desktop - Side by Side Layout */
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
     .kiln-dashboard {
         display: grid;
         grid-template-columns: 1fr 1.5fr;

@@ -73,7 +73,10 @@
       <span class="metric-title">Time</span>
      </div>
      <div class="metric-card-value">
-      <span class="metric-number" id="time_remaining">---</span>
+      <div class="time-display">
+       <span class="time-remaining" id="time_remaining">---</span>
+       <span class="time-completion" id="time_completion">---</span>
+      </div>
      </div>
     </div>
 
@@ -105,7 +108,10 @@
     <!-- System Indicators -->
     <div class="system-indicators">
      <div class="indicator-group">
-      <span class="indicator" id="heat" title="Heating Element" data-label="HEAT">&#92;</span>
+      <div class="indicator-with-label">
+       <span class="indicator" id="heat" title="Heating Element" data-label="HEAT">&#92;</span>
+       <span class="indicator-percentage" id="heat_percentage" style="display:none;">0%</span>
+      </div>
       <span class="indicator" id="cool" title="Cooling" data-label="COOL">&#108;</span>
       <span class="indicator" id="air" title="Air Circulation" data-label="AIR">&#91;</span>
       <span class="indicator" id="hazard" title="Warning" data-label="WARN">&#73;</span>
