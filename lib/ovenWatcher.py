@@ -86,6 +86,11 @@ class OvenWatcher(threading.Thread):
                     wsock.send(message_json)
                 except:
                     log.error("could not write to socket %s"%wsock)
-                    self.observers.remove(wsock)
+                    # mark for removal if sending fails
+                    wsock._remove = True
             else:
-                self.observers.remove(wsock)
+                # mark for removal if socket is None
+                wsock._remove = True
+
+        # remove all marked observers after iteration
+        self.observers = [ws for ws in self.observers if not getattr(ws, '_remove', False)]
