@@ -779,8 +779,19 @@ $(document).ready(function()
                     // Hide percentage when not heating
                     $('#heat_percentage').hide();
                 }
-                if (x.cool > 0.5) { $('#cool').addClass("status-led-cool-active"); } else { $('#cool').removeClass("status-led-cool-active"); }
-                if (x.air > 0.5) { $('#air').addClass("status-led-air-active"); } else { $('#air').removeClass("status-led-air-active"); }
+                if (x.error_percent > 0) {
+                    $('#errors').addClass("status-led-errors-active");
+                    var error_percent = Math.round(x.error_percent);
+                    $('#error_percentage').html(error_percent + '%').show();
+                } else {
+                    $('#errors').removeClass("status-led-errors-active");
+                    $('#error_percentage').hide();
+                }
+                if (x.catching_up) {
+                    $('#catchup').addClass("status-led-catchup-active");
+                } else {
+                    $('#catchup').removeClass("status-led-catchup-active");
+                }
                 if (x.temperature > hazardTemp()) { $('#hazard').addClass("status-led-hazard-active"); } else { $('#hazard').removeClass("status-led-hazard-active"); }
                 if ((x.door == "OPEN") || (x.door == "UNKNOWN")) { $('#door').addClass("ds-led-door-open"); } else { $('#door').removeClass("ds-led-door-open"); }
 

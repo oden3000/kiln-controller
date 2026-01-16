@@ -112,8 +112,13 @@
        <span class="indicator" id="heat" title="Heating Element" data-label="HEAT">&#92;</span>
        <span class="indicator-percentage" id="heat_percentage" style="display:none;">0%</span>
       </div>
-      <span class="indicator" id="cool" title="Cooling" data-label="COOL">&#108;</span>
-      <span class="indicator" id="air" title="Air Circulation" data-label="AIR">&#91;</span>
+      <div class="indicator-with-label">
+       <span class="indicator" id="errors" title="Thermocouple Errors" data-label="ERR">&#9888;</span>
+       <span class="indicator-percentage" id="error_percentage" style="display:none;">0%</span>
+      </div>
+      <div class="indicator-with-label">
+       <span class="indicator" id="catchup" title="Catching Up" data-label="SYNC">&#10227;</span>
+      </div>
       <span class="indicator" id="hazard" title="Warning" data-label="WARN">&#73;</span>
       <span class="indicator" id="timer" title="Timer Active" data-label="TIME">&#x29D6;</span>
      </div>

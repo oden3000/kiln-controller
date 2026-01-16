@@ -81,7 +81,7 @@ body {
 .metric-value-hero {
     font-family: "Digi", monospace;
     font-size: 56px;
-    color: #666;
+    color: #d8d3c5;
     text-shadow:
         0 0 30px rgba(0, 0, 0, 0.8),
         0 0 15px rgba(216, 211, 197, 0.3);
@@ -180,7 +180,7 @@ body {
 .metric-number {
     font-family: "Digi", monospace;
     font-size: 28px;
-    color: #666;
+    color: #d8d3c5;
     text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
     letter-spacing: 0px;
     line-height: 1;
@@ -196,7 +196,7 @@ body {
 .time-remaining {
     font-family: "Digi", monospace;
     font-size: 22px;
-    color: #666;
+    color: #d8d3c5;
     text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
     letter-spacing: 0px;
     line-height: 1;
@@ -232,14 +232,8 @@ body {
     border-left: 3px solid #75890c;
 }
 
-.target-card .metric-number {
-    color: #75890c;
-    text-shadow: 0 0 15px rgba(117, 137, 12, 0.4);
-}
-
 .target-card .metric-icon {
     color: #75890c;
-    opacity: 1;
 }
 
 /* State Card */
@@ -365,22 +359,13 @@ body {
         inset 0 0 10px rgba(214, 42, 0, 0.2);
 }
 
-.status-led-cool-active,
-.indicator.status-led-cool-active {
-    color: rgb(74, 159, 255) !important;
-    background: rgba(74, 159, 255, 0.2);
+.status-led-errors-active,
+.indicator.status-led-errors-active {
+    color: rgb(255, 102, 0) !important;
+    background: rgba(255, 102, 0, 0.2);
     box-shadow:
-        0 0 15px rgba(74, 159, 255, 0.4),
-        inset 0 0 10px rgba(74, 159, 255, 0.2);
-}
-
-.status-led-air-active,
-.indicator.status-led-air-active {
-    color: rgb(240, 240, 240) !important;
-    background: rgba(240, 240, 240, 0.2);
-    box-shadow:
-        0 0 15px rgba(240, 240, 240, 0.4),
-        inset 0 0 10px rgba(240, 240, 240, 0.2);
+        0 0 15px rgba(255, 102, 0, 0.4),
+        inset 0 0 10px rgba(255, 102, 0, 0.2);
 }
 
 .status-led-hazard-active,
@@ -403,6 +388,16 @@ body {
     animation: pulse-timer 1.5s ease-in-out infinite;
 }
 
+.status-led-catchup-active,
+.indicator.status-led-catchup-active {
+    color: rgb(0, 204, 255) !important;
+    background: rgba(0, 204, 255, 0.2);
+    box-shadow:
+        0 0 15px rgba(0, 204, 255, 0.4),
+        inset 0 0 10px rgba(0, 204, 255, 0.2);
+    animation: pulse-sync 1.5s ease-in-out infinite;
+}
+
 @keyframes pulse-warning {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.6; }
@@ -411,6 +406,11 @@ body {
 @keyframes pulse-timer {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.4; }
+}
+
+@keyframes pulse-sync {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
 .bar {

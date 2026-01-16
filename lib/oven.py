@@ -524,6 +524,7 @@ class Oven(threading.Thread):
             'pidstats': self.pid.pidstats,
             'scheduled_start': scheduled_start,
             'catching_up': self.catching_up,
+            'error_percent': self.status.error_percent(),
         }
         return state
 
