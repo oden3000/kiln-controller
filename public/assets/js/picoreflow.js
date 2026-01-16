@@ -15,6 +15,9 @@ var kwh_rate = 0.26;
 var currency_type = "EUR";
 var scheduled_start_time = null;
 var countdown_interval = null;
+var run_start_time = null;
+var run_summary = null;
+var last_run_data = {runtime: 0, cost: 0, kwh: 0, currency_type: '$'};
 
 function updateScheduledCountdown() {
     if (scheduled_start_time === null) {
@@ -641,21 +644,40 @@ $(document).ready(function()
                 state = x.state;
                 if (state!=state_last)
                 {
+                    // Capture start time when entering RUNNING state
+                    if (state == "RUNNING" && state_last != "PAUSED") {
+                        run_start_time = new Date();
+                    }
+
                     if(state_last == "RUNNING" && state != "PAUSED" )
                     {
-			console.log(state);
+                        console.log(state);
                         $('#target_temp').html('---');
                         updateProgress(0);
-                        $.bootstrapGrowl("<span class=\"glyphicon glyphicon-exclamation-sign\"></span> <b>Run completed</b>", {
-                        ele: 'body', // which element to append to
-                        type: 'success', // (null, 'info', 'error', 'success')
-                        offset: {from: 'top', amount: 250}, // 'top', or 'bottom'
-                        align: 'center', // ('left', 'right', or 'center')
-                        width: 385, // (integer, or 'auto')
-                        delay: 0,
-                        allow_dismiss: true,
-                        stackup_spacing: 10 // spacing between consecutively stacked growls.
-                        });
+
+                        // Calculate actual real-world duration from start time
+                        var duration_seconds = run_start_time ? Math.floor((Date.now() - run_start_time.getTime()) / 1000) : 0;
+                        var duration_str = new Date(duration_seconds * 1000).toISOString().substr(11, 8);
+                        var start_time_str = run_start_time ? run_start_time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '---';
+
+                        run_summary = {
+                            start_time: start_time_str,
+                            duration: duration_str,
+                            cost: last_run_data.currency_type + parseFloat(last_run_data.cost).toFixed(2),
+                            kwh: parseFloat(last_run_data.kwh).toFixed(2)
+                        };
+
+                        // Update modal with summary data
+                        $('#summary_start_time').html(run_summary.start_time);
+                        $('#summary_duration').html(run_summary.duration);
+                        $('#summary_cost').html(run_summary.cost);
+                        $('#summary_kwh').html(run_summary.kwh);
+
+                        // Show the summary modal
+                        $('#runSummaryModal').modal('show');
+
+                        // Reset for next run
+                        run_start_time = null;
                     }
                 }
 
@@ -701,6 +723,12 @@ $(document).ready(function()
                     $('#target_temp').html(parseInt(x.target));
                     $('#cost').html(x.currency_type + parseFloat(x.cost).toFixed(2));
                     $('#kwh').html(parseFloat(x.kwh).toFixed(2));
+
+                    // Store run data for summary when run ends
+                    last_run_data.runtime = x.runtime;
+                    last_run_data.cost = x.cost;
+                    last_run_data.kwh = x.kwh;
+                    last_run_data.currency_type = x.currency_type;
 
                   
 

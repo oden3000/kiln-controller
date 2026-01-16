@@ -301,6 +301,28 @@
   </div>
  </div>
 
+ <div id="runSummaryModal" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+   <div class="modal-content">
+    <div class="modal-header">
+     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+     <h3 class="modal-title" id="runSummaryModalLabel">Run Summary</h3>
+    </div>
+    <div class="modal-body">
+     <table class="table table-bordered">
+      <tr><td>Start Time</td><td><b><span id="summary_start_time">---</span></b></td></tr>
+      <tr><td>Duration</td><td><b><span id="summary_duration">---</span></b></td></tr>
+      <tr><td>Cost</td><td><b><span id="summary_cost">---</span></b></td></tr>
+      <tr><td>Power</td><td><b><span id="summary_kwh">---</span> KWH</b></td></tr>
+     </table>
+    </div>
+    <div class="modal-footer">
+     <button type="button" class="btn btn-primary" style="width: 100%" data-dismiss="modal">OK</button>
+    </div>
+   </div>
+  </div>
+ </div>
+
  <div id="stopKilnModal" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
   <div class="modal-dialog">
    <div class="modal-content">
