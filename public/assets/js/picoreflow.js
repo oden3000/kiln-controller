@@ -321,6 +321,7 @@ function enterNewMode()
     graph.profile.data = [];
     graph.plot = $.plot("#graph_container", [ graph.profile, graph.live ], getOptions());
     updateProfileTable();
+    $('#profile_table').slideDown();
 }
 
 function enterEditMode()
@@ -337,6 +338,7 @@ function enterEditMode()
     graph.profile.draggable = true;
     graph.plot = $.plot("#graph_container", [ graph.profile, graph.live ], getOptions());
     updateProfileTable();
+    $('#profile_table').slideDown();
 }
 
 function leaveEditMode()
