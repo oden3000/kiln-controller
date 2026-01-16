@@ -134,7 +134,7 @@ class TempSensorReal(TempSensor):
             log.info("Software SPI selected for reading thermocouple")
         else:
             import board
-            self.spi = board.SPI();
+            self.spi = board.SPI()
             log.info("Hardware SPI selected for reading thermocouple")
 
     def get_temperature(self):
@@ -446,15 +446,17 @@ class Oven(threading.Thread):
             if self.target - temp > config.pid_control_window:
                 log.info("kiln must catch up, too cold, shifting schedule")
                 self.start_time = self.get_start_time()
-                self.catching_up = True;
+                self.totaltime += self.time_step  # Extend total time to account for the pause
+                self.catching_up = True
                 return
             # kiln too hot, wait for it to cool down
             if temp - self.target > config.pid_control_window:
                 log.info("kiln must catch up, too hot, shifting schedule")
                 self.start_time = self.get_start_time()
-                self.catching_up = True;
+                self.totaltime += self.time_step  # Extend total time to account for the pause
+                self.catching_up = True
                 return
-            self.catching_up = False;
+            self.catching_up = False
 
     def update_runtime(self):
 
