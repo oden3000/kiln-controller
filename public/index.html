@@ -25,54 +25,124 @@
 <body>
 
  <div class="container">
-  <div id="status">
-   <div class="ds-title-panel">
-    <div class="ds-title">Sensor Temp</div>
-    <div class="ds-title">Target Temp</div>
-    <div class="ds-title">Heat Rate</div>
-    <div class="ds-title">Cost</div>
-    <div id="schedule-status" class="ds-title"></div>
-    <div class="ds-title ds-state pull-right" style="border-left: 1px solid #ccc;">Status</div>
-   </div>
-   <div class="clearfix"></div>
-   <div class="ds-panel">
-    <div class="display ds-num"><span id="act_temp">25</span><span class="ds-unit" id="act_temp_scale" >&deg;C</span></div>
-    <div class="display ds-num ds-target"><span id="target_temp">---</span><span class="ds-unit" id="target_temp_scale">&deg;C</span></div>
-    <div class="display ds-num ds-heat-rate"><span id="heat_rate">---</span><span class="ds-unit" id="heat_rate_temp_scale">&deg;C</span></div>
-    <div class="display ds-num ds-cost"><span id="cost">0.00</span><span class="ds-unit" id="cost"></span></div>
-    <div class="display ds-num ds-text" id="state"></div>
-    <div class="display pull-right ds-state" style="padding-right:0"><span class="ds-led" id="heat">&#92;</span><span class="ds-led" id="cool">&#108;</span><span class="ds-led" id="air">&#91;</span><span class="ds-led" id="hazard">&#73;</span><span class="ds-led" id="timer">&#x29D6;</span></div>
-   </div>
-   <div class="clearfix"></div>
-   <div>
-    <div class="progress progress-striped active">
-     <div id="progressBar" class="progress-bar"  role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-      <span class="sr-only"></span>
+  <!-- Kiln Controller Dashboard - Modern Card Layout -->
+  <div id="status" class="kiln-dashboard">
+
+   <!-- Primary Metric - Current Temperature (Hero Card) -->
+   <div class="metric-hero">
+    <div class="metric-hero-inner">
+     <div class="metric-label">Current Temperature</div>
+     <div class="metric-display">
+      <span class="metric-value-hero" id="act_temp">25</span>
+      <span class="metric-unit-hero" id="act_temp_scale">&deg;C</span>
      </div>
+     <div class="metric-sublabel" id="state">IDLE</div>
     </div>
    </div>
+
+   <!-- Secondary Metrics Grid -->
+   <div class="metrics-grid">
+
+    <!-- Target Temperature Card -->
+    <div class="metric-card target-card">
+     <div class="metric-card-header">
+      <span class="metric-icon">&#9678;</span>
+      <span class="metric-title">Target</span>
+     </div>
+     <div class="metric-card-value">
+      <span class="metric-number" id="target_temp">---</span>
+      <span class="metric-suffix" id="target_temp_scale">&deg;C</span>
+     </div>
+    </div>
+
+    <!-- Cost Card -->
+    <div class="metric-card">
+     <div class="metric-card-header">
+      <span class="metric-icon">&#36;</span>
+      <span class="metric-title">Cost</span>
+     </div>
+     <div class="metric-card-value">
+      <span class="metric-number" id="cost">0.00</span>
+     </div>
+    </div>
+
+    <!-- Time Remaining Card -->
+    <div class="metric-card time-card">
+     <div class="metric-card-header">
+      <span class="metric-icon">&#x23F1;</span>
+      <span class="metric-title">Time</span>
+     </div>
+     <div class="metric-card-value">
+      <span class="metric-number" id="time_remaining">---</span>
+     </div>
+    </div>
+
+    <!-- Schedule Card (shown when scheduled) -->
+    <div class="metric-card schedule-card" id="schedule-status" style="display:none;">
+     <div class="metric-card-header">
+      <span class="metric-icon">&#9719;</span>
+      <span class="metric-title">Scheduled</span>
+     </div>
+     <div class="metric-card-value schedule-time">
+      <span class="schedule-text"></span>
+     </div>
+    </div>
+
+   </div>
+
+   <!-- Status Bar with Progress -->
+   <div class="status-bar">
+
+    <!-- Progress Track -->
+    <div class="progress-track">
+     <div class="progress progress-striped active">
+      <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+       <span class="sr-only"></span>
+      </div>
+     </div>
+    </div>
+
+    <!-- System Indicators -->
+    <div class="system-indicators">
+     <div class="indicator-group">
+      <span class="indicator" id="heat" title="Heating Element" data-label="HEAT">&#92;</span>
+      <span class="indicator" id="cool" title="Cooling" data-label="COOL">&#108;</span>
+      <span class="indicator" id="air" title="Air Circulation" data-label="AIR">&#91;</span>
+      <span class="indicator" id="hazard" title="Warning" data-label="WARN">&#73;</span>
+      <span class="indicator" id="timer" title="Timer Active" data-label="TIME">&#x29D6;</span>
+     </div>
+    </div>
+
+   </div>
+
   </div>
   <div class="panel panel-default">
    <div class="panel-heading">
-    <div id="profile_selector" class="pull-left">
-     <select id="e2" class="select2" style="margin-top: 4px"></select>
-     <button id="btn_edit" type="button" class="btn btn-default" onclick="enterEditMode()"><span class="glyphicon glyphicon-edit"></span></button>
-     <button id="btn_new" type="button" class="btn btn-default" onclick="enterNewMode(selected_profile)"><span class="glyphicon glyphicon-plus"></span></button>
+    <div class="row">
+     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+      <div id="profile_selector">
+       <select id="e2" class="select2" style="margin-top: 4px"></select>
+       <button id="btn_edit" type="button" class="btn btn-default" onclick="enterEditMode()"><span class="glyphicon glyphicon-edit"></span></button>
+       <button id="btn_new" type="button" class="btn btn-default" onclick="enterNewMode(selected_profile)"><span class="glyphicon glyphicon-plus"></span></button>
+      </div>
+      <h4 id="running_profile_heading" style="display:none; margin: 0; padding-top: 8px;"></h4>
+      <div id="scheduled_countdown" style="display:none; margin: 0; padding-top: 8px;">
+       <p style="margin: 0; font-size: 14px;">
+        <span id="schedule_time_display"></span><br/>
+        <span id="countdown_display"></span>
+       </p>
+      </div>
+     </div>
+     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="text-align: right;">
+      <div id="btn_controls" style="display: inline-block;">
+       <div id="nav_start" class="btn-group" style="display:none">
+        <button type="button" class="btn btn-default" style="visibility: hidden;"  onclick="runTaskSimulation();">Simulate</button>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#jobSummaryModal"><span class="glyphicon glyphicon-play"></span> Start</button>
+       </div>
+       <button id="nav_stop" type="button" class="btn btn-danger" onclick="abortTask()" style="display:none" ><span class="glyphicon glyphicon-stop"></span> Stop</button>
+      </div>
+     </div>
     </div>
-    <h4 id="running_profile_heading" style="display:none; margin: 0; padding-top: 8px;" class="pull-left"></h4>
-    <div id="scheduled_countdown" style="display:none; margin: 0; padding-top: 8px;">
-     <p style="margin: 0; font-size: 14px;">
-      <span id="schedule_time_display"></span><br/>
-      <span id="countdown_display"></span>
-     </p>
-    </div>
-   <div id="btn_controls" class="pull-right" style="margin-top: 3px">
-    <div id="nav_start" class="btn-group" style="display:none">
-     <button type="button" class="btn btn-default" style="visibility: hidden;"  onclick="runTaskSimulation();">Simulate</button>
-     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#jobSummaryModal"><span class="glyphicon glyphicon-play"></span> Start</button>
-    </div>
-    <button id="nav_stop" type="button" class="btn btn-danger" onclick="abortTask()" style="display:none" ><span class="glyphicon glyphicon-stop"></span> Stop</button>
-   </div>
     <div id="edit" style="display:none;">
      <div class="input-group">
       <span class="input-group-addon">Schedule Name</span>

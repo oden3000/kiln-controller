@@ -656,7 +656,7 @@ $(document).ready(function()
                 {
                     $("#nav_start").hide();
                     $("#nav_stop").show();
-                    $("#timer").removeClass("ds-led-timer-active");
+                    $("#timer").removeClass("status-led-timer-active");
                     $('#schedule-status').hide();
                     $('#profile_selector').hide();
                     $('#running_profile_heading').show().html('Running: <strong>' + x.profile + '</strong>');
@@ -675,15 +675,10 @@ $(document).ready(function()
 
                     left = parseInt(x.totaltime-x.runtime);
                     eta = new Date(left * 1000).toISOString().substr(11, 8);
-                    const now = new Date();
-                    const eta_time = (new Date(now.getTime() + (left - now.getTimezoneOffset() * 60) * 1000)).toISOString().substring(11, 19);
 
                     updateProgress(parseFloat(x.runtime)/parseFloat(x.totaltime)*100);
-                    $('#state').html(
-                        '<span class="glyphicon glyphicon-time" style="font-size: 22px; font-weight: normal"></span> ' +
-                        '<span style="font-family: Digi; font-size: 40px;">' + eta + '</span> ' +
-                        '<span class="glyphicon glyphicon-info-sign" style="font-size: 22px; font-weight: normal" ' +
-                        'title="Estimated completion time: '+eta_time+'"></span></span>');
+                    $('#state').html(state);
+                    $('#time_remaining').html(eta);
                     $('#target_temp').html(parseInt(x.target));
                     $('#cost').html(x.currency_type + parseFloat(x.cost).toFixed(2));
                   
@@ -693,8 +688,9 @@ $(document).ready(function()
                 else if (state === "SCHEDULED") {
                     $("#nav_start").hide();
                     $("#nav_stop").show();
-                    $('#timer').addClass("ds-led-timer-active"); // Start blinking timer symbol
-                    $('#state').html('<p class="ds-text">'+state+'</p>');
+                    $('#timer').addClass("status-led-timer-active"); // Start blinking timer symbol
+                    $('#state').html(state);
+                    $('#time_remaining').html('---');
                     $('#schedule-status').html('Start at: ' + x.scheduled_start);
                     $('#schedule-status').show();
                     $('#profile_selector').hide();
@@ -736,8 +732,9 @@ $(document).ready(function()
                 {
                     $("#nav_start").show();
                     $("#nav_stop").hide();
-                    $("#timer").removeClass("ds-led-timer-active");
-                    $('#state').html('<p class="ds-text">'+state+'</p>');
+                    $("#timer").removeClass("status-led-timer-active");
+                    $('#state').html(state);
+                    $('#time_remaining').html('---');
                     $('#schedule-status').hide();
                     $('#profile_selector').show();
                     $('#running_profile_heading').hide();
@@ -758,13 +755,14 @@ $(document).ready(function()
                 heat_rate = parseInt(x.heat_rate)
                 if (heat_rate > 9999) { heat_rate = 9999; }
                 if (heat_rate < -9999) { heat_rate = -9999; }
-                $('#heat_rate').html(heat_rate);
-                if (typeof x.pidstats !== 'undefined') {
-                    $('#heat').html('<div class="bar" style="height:'+x.pidstats.out*70+'%;"></div>')
-                    }
-                if (x.cool > 0.5) { $('#cool').addClass("ds-led-cool-active"); } else { $('#cool').removeClass("ds-led-cool-active"); }
-                if (x.air > 0.5) { $('#air').addClass("ds-led-air-active"); } else { $('#air').removeClass("ds-led-air-active"); }
-                if (x.temperature > hazardTemp()) { $('#hazard').addClass("ds-led-hazard-active"); } else { $('#hazard').removeClass("ds-led-hazard-active"); }
+                if (typeof x.pidstats !== 'undefined' && x.pidstats.out > 0.05) {
+                    $('#heat').addClass("status-led-heat-active");
+                } else {
+                    $('#heat').removeClass("status-led-heat-active");
+                }
+                if (x.cool > 0.5) { $('#cool').addClass("status-led-cool-active"); } else { $('#cool').removeClass("status-led-cool-active"); }
+                if (x.air > 0.5) { $('#air').addClass("status-led-air-active"); } else { $('#air').removeClass("status-led-air-active"); }
+                if (x.temperature > hazardTemp()) { $('#hazard').addClass("status-led-hazard-active"); } else { $('#hazard').removeClass("status-led-hazard-active"); }
                 if ((x.door == "OPEN") || (x.door == "UNKNOWN")) { $('#door').addClass("ds-led-door-open"); } else { $('#door').removeClass("ds-led-door-open"); }
 
                 state_last = state;

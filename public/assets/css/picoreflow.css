@@ -18,115 +18,349 @@ body {
     background: #b9b6af;
 }
 
-#status {
+/* ============================================================================
+   KILN CONTROLLER DASHBOARD - Modern Card-Based Design
+   ============================================================================
+   Concept: Hero metric with supporting cards and integrated status bar
+   ============================================================================ */
+
+/* Main Dashboard Container */
+.kiln-dashboard {
     margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ============================================================================
+   HERO CARD - Primary Temperature Display
+   ============================================================================ */
+
+.metric-hero {
+    background: linear-gradient(135deg, #3F3E3A 0%, #2d2c29 100%);
+    background-image:
+        linear-gradient(135deg, rgba(63, 62, 58, 0.95) 0%, rgba(45, 44, 41, 0.95) 100%),
+        url('/picoreflow/assets/images/panel_bg.png');
+    background-blend-mode: overlay;
+    border-radius: 8px;
+    padding: 16px 20px;
+    box-shadow:
+        0 3px 5px rgba(0,0,0,0.3),
+        inset 0 0 40px rgba(0,0,0,0.4);
+    border: 1px solid rgba(185, 182, 175, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        #75890c 50%,
+        transparent 100%);
+}
+
+.metric-hero-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.metric-display {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.metric-value-hero {
+    font-family: "Digi", monospace;
+    font-size: 56px;
     color: #d8d3c5;
-    font-weight: normal;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
-    border: 1px solid #ddd;
-    height: 80px;
-    -moz-box-shadow: 0 0 1.1em 0 rgba(0,0,0,0.55);
-    -webkit-box-shadow: 0 0 1.5em 0 rgba(0,0,0,0.55);
-    box-shadow: 0 0 1.1em 0 rgba(0,0,0,0.55);
+    text-shadow:
+        0 0 30px rgba(0, 0, 0, 0.8),
+        0 0 15px rgba(216, 211, 197, 0.3);
+    letter-spacing: -1px;
+    line-height: 1;
 }
 
-#schedule-status {
-    width: auto;
-    padding-right: 4px;
-}
-
-.display {
-    display: inline-block;
-    text-align: right;
-    padding-right: 5px;
-    font-size: 40px;
-    font-weight: normal;
-    height: 40px;
-    line-height: 40px;
-    vertical-align: middle;
-    color: #d8d3c5;
-    border-color: #000000;
-}
-
-.ds-panel {
-    background: #3F3E3A url('/picoreflow/assets/images/panel_bg.png') repeat;
-    -moz-box-shadow: inset 0 0 42px 0 #000;
-    -webkit-box-shadow: inset 0 0 42px 0 #000;
-    box-shadow: inset 0 0 42px 0 #000;
-}
-
-.ds-title-panel {
-    -webkit-border-top-left-radius: 6px;
-    -webkit-border-top-right-radius: 6px;
-    -moz-border-radius-topleft: 6px;
-    -moz-border-radius-topright: 6px;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    background-image: -webkit-gradient(linear,left 0,left 100%,from(#f5f5f5),to(#e8e8e8));
-    background-image: -webkit-linear-gradient(top,#f5f5f5 0,#e8e8e8 100%);
-    background-image: -moz-linear-gradient(top,#f5f5f5 0,#e8e8e8 100%);
-    background-image: linear-gradient(to bottom,#f5f5f5 0,#e8e8e8 100%);
-    background-repeat: repeat-x;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5',endColorstr='#ffe8e8e8',GradientType=0);
-    height: 18px;
-}
-
-.ds-title {
-    display: inline-block;
-    font-size: 10px;
-    height: 18px;
-    line-height: 18px;
-    width: 100px;
-    border-right: 1px solid #b9b6af;
-    vertical-align: top;
-    text-align: center;
-    color: #8B8989;
-    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.75);
-}
-
-.ds-num {
-    width: 100px;
-    font-family: "Digi";
-    border-right: 1px solid #b9b6af;
-    white-space: nowrap;
-    text-shadow: 0 0 25px rgba(0, 0, 0, 1);
-}
-
-.ds-input {
-    color: #d8d3c5;
-    font-family: "Digi";
+.metric-unit-hero {
+    font-family: Arial, sans-serif;
     font-size: 24px;
-    text-shadow: 0 0 12px rgba(0, 0, 0, 1);
+    color: #b9b6af;
+    font-weight: 300;
+}
+
+.metric-label {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #8B8989;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.metric-sublabel {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #75890c;
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+/* ============================================================================
+   METRIC CARDS GRID - Secondary Metrics
+   ============================================================================ */
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+}
+
+.metric-card {
     background: #3F3E3A url('/picoreflow/assets/images/panel_bg.png') repeat;
-    -moz-box-shadow: inset 0 0 12px 0 #000;
-    -webkit-box-shadow: inset 0 0 12px 0 #000;
-    box-shadow: inset 0 0 12px 0 #000;
-    text-align: right;
+    border-radius: 6px;
+    padding: 10px 12px;
+    box-shadow:
+        0 2px 3px rgba(0,0,0,0.3),
+        inset 0 0 20px rgba(0,0,0,0.3);
+    border: 1px solid rgba(185, 182, 175, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.metric-card:hover {
+    transform: translateY(-1px);
+    box-shadow:
+        0 3px 6px rgba(0,0,0,0.4),
+        inset 0 0 20px rgba(0,0,0,0.3);
+}
+
+.metric-card-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.metric-icon {
+    font-size: 13px;
+    color: #8B8989;
+    opacity: 0.6;
+}
+
+.metric-title {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #8B8989;
+    font-weight: 600;
+}
+
+.metric-card-value {
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+}
+
+.metric-number {
+    font-family: "Digi", monospace;
+    font-size: 28px;
+    color: #d8d3c5;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    letter-spacing: 0px;
+    line-height: 1;
+}
+
+.metric-suffix {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #b9b6af;
+    font-weight: 300;
+}
+
+/* State Text in Card */
+.metric-state {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    color: #75890c;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+/* Target Card - Green Accent */
+.target-card {
+    border-left: 3px solid #75890c;
+}
+
+.target-card .metric-number {
+    color: #75890c;
+    text-shadow: 0 0 15px rgba(117, 137, 12, 0.4);
+}
+
+.target-card .metric-icon {
+    color: #75890c;
+    opacity: 1;
+}
+
+/* State Card */
+.state-card {
+    border-left: 3px solid #75890c;
+}
+
+.state-card .metric-icon {
+    color: #75890c;
+    opacity: 1;
+}
+
+/* Time Card */
+.time-card .metric-icon {
+    color: #4A9FFF;
+    opacity: 1;
+}
+
+/* Schedule Card */
+.schedule-card {
+    border-left: 3px solid #4A9FFF;
+}
+
+.schedule-card .metric-icon {
+    color: #4A9FFF;
+    opacity: 1;
+}
+
+.schedule-time {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #d8d3c5;
+    line-height: 1.3;
+}
+
+/* ============================================================================
+   STATUS BAR - Progress & System Indicators
+   ============================================================================ */
+
+.status-bar {
+    background: #3F3E3A url('/picoreflow/assets/images/panel_bg.png') repeat;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow:
+        0 2px 3px rgba(0,0,0,0.3),
+        inset 0 0 20px rgba(0,0,0,0.3);
+    border: 1px solid rgba(185, 182, 175, 0.2);
+}
+
+.progress-track {
     padding: 0;
-    padding-right: 7px;
-
 }
 
-.ds-unit {
-    font-family: "Arial";
-    font-size: 22px;
-    vertical-align: top;
-    line-height: 32px;
-    margin-left: 4px;
+.system-indicators {
+    padding: 10px 12px;
+    border-top: 1px solid rgba(185, 182, 175, 0.15);
 }
 
-.ds-led {
+.indicator-group {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 6px;
+}
+
+.indicator {
     font-family: "Tables";
-    font-size: 38px;
-    text-align: center;
+    font-size: 22px;
     color: #1F1E1A;
-    text-shadow: 0 0 5px #000, 0 0 5px #000;
-    border-left: 1px solid #b9b6af;
-    height: 40px;
-    width: 42px;
-    display: inline-block;
+    text-shadow: 0 0 5px #000;
+    padding: 6px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    position: relative;
+    flex: 1;
+    text-align: center;
+    cursor: default;
+}
+
+.indicator::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: Arial, sans-serif;
+    font-size: 7px;
+    letter-spacing: 0.5px;
+    color: #8B8989;
+    white-space: nowrap;
+    opacity: 0.7;
+}
+
+/* Indicator Active States */
+.status-led-heat-active,
+.indicator.status-led-heat-active {
+    color: rgb(214, 42, 0) !important;
+    background: rgba(214, 42, 0, 0.2);
+    box-shadow:
+        0 0 15px rgba(214, 42, 0, 0.4),
+        inset 0 0 10px rgba(214, 42, 0, 0.2);
+}
+
+.status-led-cool-active,
+.indicator.status-led-cool-active {
+    color: rgb(74, 159, 255) !important;
+    background: rgba(74, 159, 255, 0.2);
+    box-shadow:
+        0 0 15px rgba(74, 159, 255, 0.4),
+        inset 0 0 10px rgba(74, 159, 255, 0.2);
+}
+
+.status-led-air-active,
+.indicator.status-led-air-active {
+    color: rgb(240, 240, 240) !important;
+    background: rgba(240, 240, 240, 0.2);
+    box-shadow:
+        0 0 15px rgba(240, 240, 240, 0.4),
+        inset 0 0 10px rgba(240, 240, 240, 0.2);
+}
+
+.status-led-hazard-active,
+.indicator.status-led-hazard-active {
+    color: rgb(255, 204, 0) !important;
+    background: rgba(255, 204, 0, 0.2);
+    box-shadow:
+        0 0 15px rgba(255, 204, 0, 0.4),
+        inset 0 0 10px rgba(255, 204, 0, 0.2);
+    animation: pulse-warning 2s ease-in-out infinite;
+}
+
+.status-led-timer-active,
+.indicator.status-led-timer-active {
+    color: rgb(74, 159, 255) !important;
+    background: rgba(74, 159, 255, 0.2);
+    box-shadow:
+        0 0 15px rgba(74, 159, 255, 0.4),
+        inset 0 0 10px rgba(74, 159, 255, 0.2);
+    animation: pulse-timer 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-warning {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+@keyframes pulse-timer {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
 }
 
 .bar {
@@ -141,107 +375,6 @@ body {
     //position:absolute;
     //bottom:0;
     }
-
-.ds-led-hazard-active {
-    color: rgb(255, 204, 0);
-    background: -moz-radial-gradient(center, ellipse cover, rgba(242,195,67,1) 0%, rgba(241,218,54,0.26) 100%); /* FF3.6+ */
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(242,195,67,1)), color-stop(100%,rgba(241,218,54,0.26))); /* Chrome,Safari4+ */
-    background: -webkit-radial-gradient(center, ellipse cover, rgba(242,195,67,1) 0%,rgba(241,218,54,0.26) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-radial-gradient(center, ellipse cover, rgba(242,195,67,1) 0%,rgba(241,218,54,0.26) 100%); /* Opera 12+ */
-    background: -ms-radial-gradient(center, ellipse cover, rgba(242,195,67,1) 0%,rgba(241,218,54,0.26) 100%); /* IE10+ */
-    background: radial-gradient(ellipse at center, rgba(242,195,67,1) 0%,rgba(241,218,54,0.26) 100%); /* W3C */
-}
-
-.ds-led-door-open {
-    color: rgb(214, 42, 0);
-    background: -moz-radial-gradient(center, ellipse cover, rgba(242,195,67,1) 0%, rgba(241,218,54,0.26) 100%); /* FF3.6+ */
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(242,195,67,1)), color-stop(100%,rgba(241,218,54,0.26))); /* Chrome,Safari4+ */
-    background: -webkit-radial-gradient(center, ellipse cover, rgba(242,195,67,1) 0%,rgba(241,218,54,0.26) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-radial-gradient(center, ellipse cover, rgba(242,195,67,1) 0%,rgba(241,218,54,0.26) 100%); /* Opera 12+ */
-    background: -ms-radial-gradient(center, ellipse cover, rgba(242,195,67,1) 0%,rgba(241,218,54,0.26) 100%); /* IE10+ */
-    background: radial-gradient(ellipse at center, rgba(242,195,67,1) 0%,rgba(241,218,54,0.26) 100%); /* W3C */
-}
-
-.ds-led-cool-active {
-    color: rgb(74, 159, 255);
-    background: -moz-radial-gradient(center, ellipse cover, rgba(124,197,239,1) 0%, rgba(48,144,209,0.26) 100%); /* FF3.6+ */
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(124,197,239,1)), color-stop(100%,rgba(48,144,209,0.26))); /* Chrome,Safari4+ */
-    background: -webkit-radial-gradient(center, ellipse cover, rgba(124,197,239,1) 0%,rgba(48,144,209,0.26) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-radial-gradient(center, ellipse cover, rgba(124,197,239,1) 0%,rgba(48,144,209,0.26) 100%); /* Opera 12+ */
-    background: -ms-radial-gradient(center, ellipse cover, rgba(124,197,239,1) 0%,rgba(48,144,209,0.26) 100%); /* IE10+ */
-    background: radial-gradient(ellipse at center, rgba(124,197,239,1) 0%,rgba(48,144,209,0.26) 100%); /* W3C */
-}
-
-.ds-led-heat-active {
-    color: rgb(214, 42, 0);
-    background: -moz-radial-gradient(center, ellipse cover, rgba(214,25,25,1) 0%, rgba(214,42,0,0.26) 100%); /* FF3.6+ */
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(214,25,25,1)), color-stop(100%,rgba(214,42,0,0.26))); /* Chrome,Safari4+ */
-    background: -webkit-radial-gradient(center, ellipse cover, rgba(214,25,25,1) 0%,rgba(214,42,0,0.26) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-radial-gradient(center, ellipse cover, rgba(214,25,25,1) 0%,rgba(214,42,0,0.26) 100%); /* Opera 12+ */
-    background: -ms-radial-gradient(center, ellipse cover, rgba(214,25,25,1) 0%,rgba(214,42,0,0.26) 100%); /* IE10+ */
-    background: radial-gradient(ellipse at center, rgba(214,25,25,1) 0%,rgba(214,42,0,0.26) 100%); /* W3C */
-}
-
-.ds-led-air-active {
-    color: rgb(240, 240, 240);
-    background: -moz-radial-gradient(center, ellipse cover, rgba(221,221,221,1) 0%, rgba(221,221,221,0.26) 100%); /* FF3.6+ */
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(221,221,221,1)), color-stop(100%,rgba(221,221,221,0.26))); /* Chrome,Safari4+ */
-    background: -webkit-radial-gradient(center, ellipse cover, rgba(221,221,221,1) 0%,rgba(221,221,221,0.26) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-radial-gradient(center, ellipse cover, rgba(221,221,221,1) 0%,rgba(221,221,221,0.26) 100%); /* Opera 12+ */
-    background: -ms-radial-gradient(center, ellipse cover, rgba(221,221,221,1) 0%,rgba(221,221,221,0.26) 100%); /* IE10+ */
-    background: radial-gradient(ellipse at center, rgba(221,221,221,1) 0%,rgba(221,221,221,0.26) 100%); /* W3C */
-}
-
-.ds-led-timer-active {
-    color: rgb(74, 159, 255);
-    animation: blinker 1s linear infinite;
-    background: -moz-radial-gradient(center, ellipse cover, rgba(124,197,239,1) 0%, rgba(48,144,209,0.26) 100%); /* FF3.6+ */
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(124,197,239,1)), color-stop(100%,rgba(48,144,209,0.26))); /* Chrome,Safari4+ */
-    background: -webkit-radial-gradient(center, ellipse cover, rgba(124,197,239,1) 0%,rgba(48,144,209,0.26) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-radial-gradient(center, ellipse cover, rgba(124,197,239,1) 0%,rgba(48,144,209,0.26) 100%); /* Opera 12+ */
-    background: -ms-radial-gradient(center, ellipse cover, rgba(124,197,239,1) 0%,rgba(48,144,209,0.26) 100%); /* IE10+ */
-    background: radial-gradient(ellipse at center, rgba(124,197,239,1) 0%,rgba(48,144,209,0.26) 100%); /* W3C */
-}
-
-@keyframes blinker {
-  50% {
-    opacity: 0;
-  }
-}
-
-.ds-trend {
-    top: 0;
-    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.25), -1px -1px 0 rgba(0, 0, 0, 0.4);
-    color: rgb(233, 233, 233);
-    font-size: 20px;
-}
-
-.ds-target {
-    color: #75890c;
-}
-
-.ds-state {
-    border: none;
-    width: initial;
-    text-align: center;
-    width: 168px;
-    padding: 0;
-}
-
-.ds-state {
-    border: none;
-    width: initial;
-    text-align: center;
-    width: 210px;
-    padding: 0;
-}
-
-.ds-text {
-    border: none;
-    width: initial;
-    font-family: sans-serif;
-    font-size: 32px;
-}
 
 .progress {
     -webkit-border-radius: 0;
@@ -440,4 +573,279 @@ body {
 .table-responsive {
     overflow-x: hidden;
     overflow-y: hidden;
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN - Mobile First Card Layout
+   ============================================================================ */
+
+/* Base Mobile Styles (Default) */
+@media (max-width: 767px) {
+    .container {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .kiln-dashboard {
+        gap: 8px;
+    }
+
+    .metric-hero {
+        padding: 14px 16px;
+    }
+
+    .metric-value-hero {
+        font-size: 48px;
+    }
+
+    .metric-unit-hero {
+        font-size: 20px;
+    }
+
+    .metric-label {
+        font-size: 9px;
+        margin-bottom: 6px;
+    }
+
+    .metric-sublabel {
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .metric-card {
+        padding: 8px 10px;
+    }
+
+    .metric-number {
+        font-size: 24px;
+    }
+
+    .metric-suffix {
+        font-size: 11px;
+    }
+
+    .metric-state {
+        font-size: 15px;
+    }
+
+    .indicator {
+        font-size: 20px;
+        padding: 5px;
+    }
+
+    .indicator::after {
+        font-size: 6px;
+        bottom: -12px;
+    }
+
+    .system-indicators {
+        padding: 12px 8px;
+    }
+}
+
+/* Extra Small Phones - Stack Cards Vertically */
+@media (max-width: 380px) {
+    .metric-value-hero {
+        font-size: 42px;
+    }
+
+    .metric-unit-hero {
+        font-size: 18px;
+    }
+
+    .metric-label {
+        font-size: 8px;
+        margin-bottom: 5px;
+    }
+
+    .metric-sublabel {
+        font-size: 11px;
+        margin-top: 5px;
+    }
+
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .metric-card {
+        padding: 10px 12px;
+    }
+
+    .metric-number {
+        font-size: 26px;
+    }
+
+    .metric-state {
+        font-size: 16px;
+    }
+}
+
+/* Tablets - 3 Column Grid */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kiln-dashboard {
+        gap: 10px;
+    }
+
+    .metric-hero {
+        padding: 18px 20px;
+    }
+
+    .metric-value-hero {
+        font-size: 64px;
+    }
+
+    .metric-unit-hero {
+        font-size: 28px;
+    }
+
+    .metric-label {
+        font-size: 11px;
+        margin-bottom: 10px;
+    }
+
+    .metric-sublabel {
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    .metrics-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .metric-card {
+        padding: 12px 14px;
+    }
+
+    .metric-number {
+        font-size: 32px;
+    }
+
+    .metric-suffix {
+        font-size: 13px;
+    }
+
+    .metric-state {
+        font-size: 20px;
+    }
+
+    .indicator {
+        font-size: 24px;
+    }
+}
+
+/* Desktop - Side by Side Layout */
+@media (min-width: 1024px) {
+    .kiln-dashboard {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        grid-template-rows: auto auto;
+        gap: 12px;
+    }
+
+    .metric-hero {
+        grid-row: 1 / 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 200px;
+    }
+
+    .metric-value-hero {
+        font-size: 72px;
+    }
+
+    .metric-unit-hero {
+        font-size: 32px;
+    }
+
+    .metric-label {
+        font-size: 12px;
+        margin-bottom: 12px;
+    }
+
+    .metric-sublabel {
+        font-size: 18px;
+        margin-top: 12px;
+    }
+
+    .metrics-grid {
+        grid-column: 2;
+        grid-row: 1;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .status-bar {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .metric-card {
+        padding: 12px 14px;
+    }
+
+    .metric-number {
+        font-size: 32px;
+    }
+
+    .metric-state {
+        font-size: 20px;
+    }
+
+    .indicator {
+        font-size: 24px;
+        padding: 7px;
+    }
+
+    .indicator::after {
+        font-size: 7px;
+        bottom: -15px;
+    }
+}
+
+/* Large Desktops - Expanded Layout */
+@media (min-width: 1400px) {
+    .metric-hero {
+        min-height: 220px;
+    }
+
+    .metric-value-hero {
+        font-size: 84px;
+    }
+
+    .metric-unit-hero {
+        font-size: 36px;
+    }
+
+    .metric-label {
+        font-size: 13px;
+        margin-bottom: 14px;
+    }
+
+    .metric-sublabel {
+        font-size: 20px;
+        margin-top: 14px;
+    }
+
+    .metrics-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+
+    .metric-number {
+        font-size: 36px;
+    }
+
+    .metric-suffix {
+        font-size: 14px;
+    }
+
+    .metric-state {
+        font-size: 22px;
+    }
 }
