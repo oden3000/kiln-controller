@@ -541,7 +541,12 @@ class Oven(threading.Thread):
             now = time.time()
             minutes = (now - state_age)/60
             if(minutes <= config.automatic_restart_window):
+                log.info("State file is %.1f minutes old (within automatic_restart_window of %d minutes). Will attempt automatic restart." % (minutes, config.automatic_restart_window))
                 return False
+            else:
+                log.info("State file is %.1f minutes old, exceeds automatic_restart_window of %d minutes. Automatic restart will NOT be attempted." % (minutes, config.automatic_restart_window))
+                return True
+        log.info("State file does not exist at %s. Automatic restart will NOT be attempted." % config.automatic_restart_state_file)
         return True
 
     def save_automatic_restart_state(self):
