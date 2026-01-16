@@ -855,7 +855,7 @@ class PID():
 
         error = float(setpoint - ispoint)
 
-        # this removes the need for config.stop_integral_windup
+        # this removes the need for config.stop_integral_windup (removed)
         # it turns the controller into a binary on/off switch
         # any time it's outside the window defined by
         # config.pid_control_window
