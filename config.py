@@ -159,7 +159,7 @@ simulate = True
 sim_t_env      = 65   # deg
 sim_c_heat     = 500.0  # J/K  heat capacity of heat element
 sim_c_oven     = 5000.0 # J/K  heat capacity of oven
-sim_p_heat     = 5450.0 # W    heating power of oven
+sim_p_heat     = 2000.0 # W    heating power of oven
 sim_R_o_nocool = 0.5   # K/W  thermal resistance oven -> environment
 sim_R_o_cool   = 0.05   # K/W  " with cooling
 sim_R_ho_noair = 0.1    # K/W  thermal resistance heat element -> oven
@@ -167,7 +167,7 @@ sim_R_ho_air   = 0.05   # K/W  " with internal air circulation
 
 # if you want simulations to happen faster than real time, this can be
 # set as high as 1000 to speed simulations up by 1000 times.
-sim_speedup_factor = 1
+sim_speedup_factor = 5
 
 
 ########################################################################
@@ -176,7 +176,7 @@ sim_speedup_factor = 1
 #
 # If you change the temp_scale, all settings in this file are assumed to
 # be in that scale.
-temp_scale          = "f" # c = Celsius | f = Fahrenheit - Unit to display
+temp_scale          = "c" # c = Celsius | f = Fahrenheit - Unit to display
 time_scale_slope    = "h" # s = Seconds | m = Minutes | h = Hours - Slope displayed in temp_scale per time_scale_slope
 time_scale_profile  = "m" # s = Seconds | m = Minutes | h = Hours - Enter and view target time in time_scale_profile
 
@@ -256,7 +256,7 @@ ignore_tc_too_many_errors = False
 # The state file is written to disk every sensor_time_wait seconds (2s by default)
 # and is written in the same directory as config.py.
 automatic_restarts = True
-automatic_restart_window = 15 # max minutes since power outage
+automatic_restart_window = 30 # max minutes since power outage
 automatic_restart_state_file = os.path.abspath(os.path.join(os.path.dirname( __file__ ),'state.json'))
 
 ########################################################################
@@ -277,3 +277,45 @@ kiln_profiles_directory = os.path.abspath(os.path.join(os.path.dirname( __file__
 # To prevent throttling, set throttle_percent to 100.
 throttle_below_temp = 300
 throttle_percent = 20
+
+########################################################################
+# Load custom configuration overrides
+# If config_custom.py exists in the same directory as this file,
+# any settings defined there will override the defaults above.
+# This allows users to customize settings without modifying version-controlled files.
+#
+# Example config_custom.py:
+#   pid_kp = 15
+#   pid_ki = 100
+#   simulate = False
+#
+# Add config_custom.py to .gitignore so it's not checked into version control
+try:
+    import os
+    import sys
+    import importlib.util
+    
+    custom_config_path = os.path.join(os.path.dirname(__file__), 'config_custom.py')
+    
+    if os.path.isfile(custom_config_path):
+        # Load the custom config module
+        spec = importlib.util.spec_from_file_location("config_custom", custom_config_path)
+        custom_config = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(custom_config)
+        
+        # Get all variables from custom_config that don't start with underscore
+        custom_settings = {name: getattr(custom_config, name) 
+                          for name in dir(custom_config) 
+                          if not name.startswith('_')}
+        
+        # Override current module's settings
+        current_module = sys.modules[__name__]
+        for setting_name, setting_value in custom_settings.items():
+            setattr(current_module, setting_name, setting_value)
+        
+        print("✓ Custom configuration loaded from config_custom.py")
+        print("  Overridden settings: " + ", ".join(custom_settings.keys()))
+    
+except Exception as e:
+    print("! Error loading custom configuration: " + str(e))
+

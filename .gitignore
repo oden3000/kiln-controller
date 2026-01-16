@@ -7,6 +7,8 @@
 thumbs.db
 #storage/profiles
 #config.py
+config_custom.py
 .idea/*
 state.json
 venv/*
+
