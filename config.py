@@ -324,3 +324,33 @@ try:
 except Exception as e:
     print("! Error loading custom configuration: " + str(e))
 
+
+# -------------------------------------------------------------------------
+# Simulate SPI for development if simulate = True
+# -------------------------------------------------------------------------
+try:
+    if 'simulate' in globals() and simulate:
+        print("Simulation mode active: using mock SPI interface.")
+
+        class MockSPI:
+            def __init__(self):
+                pass
+            def write(self, data):
+                print(f"[MockSPI] write: {data}")
+            def readinto(self, buf):
+                buf[:] = [0] * len(buf)
+
+        spi = MockSPI()
+    else:
+        import board
+        spi = board.SPI()
+except AttributeError:
+    print("SPI not available on this platform; using mock SPI.")
+    class MockSPI:
+        def __init__(self):
+            pass
+        def write(self, data):
+            print(f"[MockSPI] write: {data}")
+        def readinto(self, buf):
+            buf[:] = [0] * len(buf)
+    spi = MockSPI()
