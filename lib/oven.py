@@ -860,10 +860,17 @@ class Profile():
         return (prev_point, next_point)
 
     def get_target_temperature(self, time):
-        if time > self.get_duration():
-            return 0
+        # Handle edge case when time equals or exceeds total duration
+        if time >= self.get_duration():
+            # Return the final temperature point to avoid NoneType errors
+            return self.data[-1][1]
 
         (prev_point, next_point) = self.get_surrounding_points(time)
+
+        # Safety check in case of missing points
+        if prev_point is None or next_point is None:
+            # Fallback to last known temperature
+            return self.data[-1][1]
 
         incl = float(next_point[1] - prev_point[1]) / float(next_point[0] - prev_point[0])
         temp = prev_point[1] + (time - prev_point[0]) * incl
