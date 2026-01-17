@@ -202,6 +202,36 @@ var ws_control = new WebSocket(host+"/control");
 var ws_config = new WebSocket(host+"/config");
 var ws_storage = new WebSocket(host+"/storage");
 
+// --- WebSocket Reconnection Logic ---
+function setupReconnection(wsName, path, assignCallback) {
+    function connect() {
+        var ws = new WebSocket(host + path);
+
+        ws.onopen = function() {
+            console.log(wsName + ' WebSocket connected');
+        };
+
+        ws.onclose = function() {
+            console.warn(wsName + ' WebSocket closed, retrying in 5 seconds...');
+            setTimeout(connect, 5000);
+        };
+
+        ws.onerror = function() {
+            console.error(wsName + ' WebSocket error, closing and retrying...');
+            ws.close();
+        };
+
+        assignCallback(ws);
+    }
+    connect();
+}
+
+// Reconnectable WebSocket setup
+setupReconnection('Status', '/status', function(ws) { ws_status = ws; });
+setupReconnection('Control', '/control', function(ws) { ws_control = ws; });
+setupReconnection('Config', '/config', function(ws) { ws_config = ws; });
+setupReconnection('Storage', '/storage', function(ws) { ws_storage = ws; });
+
 
 if(window.webkitRequestAnimationFrame) window.requestAnimationFrame = window.webkitRequestAnimationFrame;
 
