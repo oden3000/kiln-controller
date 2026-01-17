@@ -493,6 +493,17 @@ class Oven(threading.Thread):
             log.info("total cost = %s%.2f" % (config.currency_type,self.cost))
             self.abort_run()
 
+            # When schedule completes and oven returns to idle, clear the time card
+            try:
+                if hasattr(self, "time_card"):
+                    log.info("Clearing time card as schedule completed and state is now idle.")
+                    self.time_card = None
+                elif hasattr(self, "schedule") and hasattr(self.schedule, "time_card"):
+                    log.info("Clearing schedule time card as schedule completed and state is now idle.")
+                    self.schedule.time_card = None
+            except Exception as e:
+                log.error(f"Error clearing time card on idle transition: {e}")
+
     def update_cost(self):
         if self.heat_on_proportion > 0:
             # Calculate KWH: kw_elements is in kilowatts, self.heat_on_proportion is in seconds
